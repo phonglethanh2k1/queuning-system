@@ -1,0 +1,64 @@
+{
+  "Common:Document title": "Document title",
+  "Common:Sign In": "Sign In",
+  "Common:Sign Out": "Sign Out",
+  "404": {
+    "page_title": "Page not found!",
+    "heading": "Page not found!",
+    "message": "The page you are looking for might have been removed or it is temporarily unavailable"
+  },
+  "500": {
+    "page_title": "Oops! Something went wrong!",
+    "heading": "Oops! Something went wrong!",
+    "message_line_1": "We are experiencing an internal server problem and cannot full fill the request right not.",
+    "message_line_2": "Please try to refresh this page or fell free to contact us for help."
+  },
+  "common": {
+    "download_app": "Download app"
+  },
+  "layout": {
+    "search": "Search",
+    "Sidebar": {
+      "home": "Home",
+      "notification": "Notification",
+      "messages": "Messages",
+      "profile": "Profile",
+      "group": "Group",
+      "event": "Event",
+      "configuration": "Configuration",
+      "support": "Support",
+      "shareFeedbacks": "Share Feedbacks",
+      "copy": "Copyright ©2022",
+      "privacy_policy": "Privacy Policy"
+    }
+  },
+  "components": {},
+  "pages": {
+    "dashboard": {
+      "title": "Home page"
+    },
+    "auth": {
+      "SignIn": {
+        "SignInForm": {
+          "forgot_password": "Forgot password?",
+          "sign_in": "Sign in",
+          "sign_up": "Sign up",
+          "no_account": "Don't have any account yet?",
+          "messages": {
+            "login_success": "Login success!"
+          }
+        }
+      },
+      "SignUp": {
+        "SignUpForm": {
+          "sign_in": "Sign in",
+          "sign_up": "Sign up",
+          "description": "Already have an account?",
+          "messages": {
+            "signUpSuccess": "Sign up success!"
+          }
+        }
+      }
+    }
+  }
+}

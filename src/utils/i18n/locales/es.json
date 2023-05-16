@@ -1,0 +1,30 @@
+{
+    "Common:Document title": "Document title",
+    "Common:Sign In": "Sign In",
+    "Common:Sign Out": "Sign Out",
+    "404": {
+        "page_title": "Page not found!",
+        "heading": "Page not found!",
+        "message": "The page you are looking for might have been removed or it is temporarily unavailable"
+    },
+    "500": {
+        "page_title": "Oops! Something went wrong!",
+        "heading": "Oops! Something went wrong!",
+        "message_line_1": "We are experiencing an internal server problem and cannot full fill the request right not.",
+        "message_line_2": "Please try to refresh this page or fell free to contact us for help."
+    },
+    "components": {
+        "auth": {
+            "AuthSignIn": {
+                "forgot_password": "Forgot password?"
+            }
+        }
+    },
+    "pages": {
+        "dashboard": {
+            "Home": {
+                "title": "Home page BA"
+            }
+        }
+    }
+}
