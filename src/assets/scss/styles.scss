@@ -1,0 +1,87 @@
+.custom-scrollbar {
+  height: 100vh;
+  overflow-y: auto;
+  overflow: hidden;
+}
+
+.custom-scrollbar:hover {
+  overflow-y: scroll;
+  overflow: auto;
+}
+
+.post-group {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1.5rem;
+}
+
+.infinite-scroll-component {
+  overflow: hidden !important;
+}
+
+// ====================== IMAGE GRID ==========================
+.image-grid {
+  .image div::before {
+    content: '';
+    display: inline-block;
+  }
+  .image-portrait {
+    .one-image div::before {
+      padding-bottom: 55%;
+    }
+    .two-image div::before {
+      padding-bottom: 100%;
+    }
+    .three-image div::before {
+      padding-bottom: 70%;
+    }
+    .four-image div::before {
+      padding-bottom: 50%;
+    }
+    .five-image div::before {
+      padding-bottom: 50%;
+    }
+  }
+  .image-square {
+    .image div::before {
+      padding-bottom: 50%;
+    }
+  }
+  .image-landscape {
+    .one-image div::before {
+      padding-bottom: 40%;
+    }
+    .two-image div::before {
+      padding-bottom: 25%;
+    }
+    .three-image div::before {
+      padding-bottom: 30%;
+    }
+    .four-image div::before {
+      padding-bottom: 30%;
+    }
+    .five-image div::before {
+      padding-bottom: 25%;
+    }
+  }
+}
+
+.auto-google-map-input {
+  border-radius: 30px;
+  font: inherit;
+  letter-spacing: inherit;
+  color: currentColor;
+  box-sizing: content-box;
+  background: none;
+  height: 1.4375em;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  display: block;
+  min-width: 0;
+  width: 100%;
+  animation-duration: 10ms;
+  padding: 14px 14px;
+  border-color: #e0e0e0;
+  border-style: solid;
+  background-color: white;
+}
