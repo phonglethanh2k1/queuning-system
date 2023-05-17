@@ -25,7 +25,7 @@ const Service = (): JSX.Element => (
           <Grid item xs={11}>
             <Tables />
           </Grid>
-          <Grid item xs={1} mt={3}>
+          <Grid item xs={1} mt={12}>
             <Link to={ServiceRoute.ADD_SERVICE}>
               <Button
                 sx={{ ml: 6, flexDirection: "column" }}
@@ -33,7 +33,7 @@ const Service = (): JSX.Element => (
                 size="medium"
                 startIcon={<AddIcon />}
               >
-                Thêm thiết bị
+                Thêm dịch vụ
               </Button>
             </Link>
           </Grid>

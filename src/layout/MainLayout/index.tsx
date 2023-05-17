@@ -88,7 +88,7 @@ export default function ResponsiveDrawer() {
               boxSizing: "border-box",
               width: drawerWidth,
               border: 0,
-              backgroundColor: "common.white",
+              backgroundColor: "common.white ",
             },
           }}
           open

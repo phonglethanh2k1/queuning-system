@@ -23,6 +23,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { DeviceRoute } from "routers/device/route";
 import DatePicker from "components/form/DatePicker";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { ServiceRoute } from "routers/service/route";
 const Tables = (): JSX.Element => {
   const dispatch = useDispatch();
   const data = useSelector((state: RootState) => state.service.data);
@@ -65,7 +66,7 @@ const Tables = (): JSX.Element => {
   // eslint-disable-next-line consistent-return
   const renderDetail = (detail: Data) => (
     <RouterLink
-      to={`${DeviceRoute.DEVICE}/${detail.id}`}
+      to={`${ServiceRoute.SERVICE}/${detail.id}`}
       style={{ color: "#4277FF" }}
     >
       Chi tiết

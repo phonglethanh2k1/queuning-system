@@ -101,51 +101,49 @@ export const fetchData =
     }
   };
 
-// const handleCreate = async (data: any) => {
-//   const equipment = collection(firebaseDatabase, "device");
+const handleCreate = async (data: any) => {
+  const equipment = collection(firebaseDatabase, "service");
 
-//   const snapshot = await addDoc(equipment, data);
-// };
+  const snapshot = await addDoc(equipment, data);
+};
 
-// export const addDeviceAsync = createAsyncThunk(
-//   "data/addDevice",
-//   async (data: any) => {
-//     const {
-//       deviceCode,
-//       typeofDevice,
-//       deviceName,
-//       userName,
-//       addressIP,
-//       serviceUsed,
-//       operationStt,
-//       connectionStt,
-//       password,
-//     } = data;
-//     const device = {
-//       deviceCode,
-//       typeofDevice,
-//       deviceName,
-//       userName,
-//       addressIP,
-//       serviceUsed,
-//       operationStt,
-//       connectionStt,
-//       password,
-//     };
-//     handleCreate(device);
-//   }
-// );
+export const addServiceAsync = createAsyncThunk(
+  "data/addService",
+  async (data: any) => {
+    const {
+      serviceCode,
+      serviceName,
+      descrip,
+      increaseVerb,
+      to,
+      prefix,
+      surfix,
+      checkbox,
+    } = data;
+    const service = {
+      serviceCode,
+      serviceName,
+      descrip,
+      increaseVerb,
+      to,
+      prefix,
+      surfix,
+      checkbox,
+    };
+    handleCreate(service);
+  }
+);
 
-// export const updateDeviceAsync = createAsyncThunk(
-//   "data/updateDevice",
-//   async (payload: UpdateDataPayload) => {
-//     const { id, values } = payload;
-//     console.log(payload);
-//     const documentRef = doc(firebaseDatabase, "device", id); // Thay collection-name bằng tên collection của bạn
-//     try {
-//       await updateDoc(documentRef, values);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// );
+export const updateDeviceAsync = createAsyncThunk(
+  "data/updateDevice",
+  async (payload: UpdateDataPayload) => {
+    const { id, values } = payload;
+    console.log(payload);
+    const documentRef = doc(firebaseDatabase, "device", id); // Thay collection-name bằng tên collection của bạn
+    try {
+      await updateDoc(documentRef, values);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);

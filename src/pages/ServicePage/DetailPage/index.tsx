@@ -1,34 +1,34 @@
-import Detail from "components/device/Detail";
+import Detail from "components/service/Detail";
 import { collection, doc, getDoc } from "firebase/firestore";
 import { firebaseDatabase } from "firebaseApp/config";
 import React, { memo, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Device } from "types/device";
+import { Service } from "types/service";
 
-const DetailDevicePage = memo((): JSX.Element => {
+const DetailServicePage = memo((): JSX.Element => {
   const { id } = useParams<{ id: string }>();
-  const [device, setDevice] = useState<Device | null>(null);
+  const [service, setService] = useState<Service | null>(null);
 
   useEffect(() => {
-    const fetchDevice = async () => {
-      const deviceDoc = doc(collection(firebaseDatabase, "device"), id);
-      const deviceData = await getDoc(deviceDoc);
-      if (deviceData.exists()) {
-        const device = {
-          id: deviceData.id,
-          ...deviceData.data(),
-        } as unknown as Device;
-        setDevice(device);
+    const fetchService = async () => {
+      const serviceDoc = doc(collection(firebaseDatabase, "service"), id);
+      const serviceData = await getDoc(serviceDoc);
+      if (serviceData.exists()) {
+        const service = {
+          id: serviceData.id,
+          ...serviceData.data(),
+        } as unknown as Service;
+        setService(service);
       } else {
         console.log("No such device");
       }
     };
-    fetchDevice();
+    fetchService();
   }, [id]);
-  if (!device) {
+  if (!service) {
     return <div>Loading...</div>;
   }
 
-  return <Detail device={device} />;
+  return <Detail service={service} />;
 });
-export default DetailDevicePage;
+export default DetailServicePage;
