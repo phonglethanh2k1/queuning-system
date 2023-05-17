@@ -7,7 +7,6 @@ import { Icon } from 'components/icons';
 import TextField from '../TextField';
 import { Props } from './types';
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-constraint
 const TimePicker = <E extends unknown, T extends unknown>(props: Props<E, T>) => {
   const { onChange = () => {} } = props;
   return (

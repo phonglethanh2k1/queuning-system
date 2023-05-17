@@ -7,7 +7,6 @@ import themePalette from './palette';
 import { IThemeOption } from './types';
 import themeTypography from './typography';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const theme = (config?: any): ThemeOptions => {
   const themeOption: IThemeOption = {
     colors: config?.colors || colors,

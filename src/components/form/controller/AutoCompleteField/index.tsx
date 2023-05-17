@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -7,8 +6,7 @@ import { Props } from './types';
 
 export * from './types';
 
-// eslint-disable-next-line max-len
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-unnecessary-type-constraint
+
 const AutoCompleteField = <E extends unknown = string | number>(props: Props<E>) => {
   const { t } = useTranslation();
   const { name, helperText, ...others } = props;

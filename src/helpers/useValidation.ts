@@ -1,5 +1,3 @@
-/* eslint-disable no-continue */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as yup from 'yup';
 import { FieldConfigType, InputType } from 'types/field';
 import { AnyObject } from 'yup/lib/types';

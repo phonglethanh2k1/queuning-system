@@ -70,7 +70,6 @@ const Tables = (): JSX.Element => {
     const countSnapshot = await getCountFromServer(coll);
     setCount(countSnapshot.data()?.count);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = snapshot.docs.map((docSnap: QueryDocumentSnapshot<any>) => ({
       ...docSnap.data(),
       id: docSnap.id,
@@ -142,7 +141,6 @@ const Tables = (): JSX.Element => {
 
   useEffect(() => {
     getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

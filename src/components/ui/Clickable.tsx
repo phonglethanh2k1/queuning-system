@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import { Link } from 'react-router-dom';
 

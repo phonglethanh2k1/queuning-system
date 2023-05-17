@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 
 import { FormControl, FormGroup, FormLabel } from '@mui/material';
@@ -11,8 +10,6 @@ export * from './types';
 
 const getItemDefault = (item: any): any => `${item}`;
 
-// eslint-disable-next-line max-len
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-unnecessary-type-constraint
 const CheckboxGroup = <E extends unknown = string | number>(props: Props<E>) => {
   const {
     value,

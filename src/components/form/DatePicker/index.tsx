@@ -11,8 +11,7 @@ import { Props } from './types';
 
 export * from './types';
 
-// eslint-disable-next-line max-len
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-unnecessary-type-constraint
+
 const DatePicker = <TInputDate extends unknown, TDate extends unknown>(props: Props<TInputDate, TDate>) => {
   const { value, helperText, error, required, placeholder, onChange = () => {}, disabled = false } = props;
   return (
@@ -22,7 +21,7 @@ const DatePicker = <TInputDate extends unknown, TDate extends unknown>(props: Pr
         value={value}
         disabled={disabled}
         onChange={onChange}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         renderInput={(params: any) => (
           <TextField
             {...params}
@@ -32,9 +31,7 @@ const DatePicker = <TInputDate extends unknown, TDate extends unknown>(props: Pr
             required={required}
             placeholder={placeholder}
             onChange={onChange}
-            // eslint-disable-next-line react/destructuring-assignment
             sx={{
-              // eslint-disable-next-line react/destructuring-assignment
               ...props?.sx,
               '.MuiInputBase': {
                 borderRadius: '5px',

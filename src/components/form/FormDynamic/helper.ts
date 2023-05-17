@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FieldConfigType, InputType } from 'types/field';
 
 export const getDefaultValues = (inputList: FieldConfigType[]): object =>

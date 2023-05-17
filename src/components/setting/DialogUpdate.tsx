@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useState } from 'react';
 import {
   Box,
@@ -79,7 +78,6 @@ const DialogUpdate = (props: { id: string; handleUpdate(values?: UpdateFormType)
     methods.setValue('comboTicket', data?.comboTicket);
     methods.setValue('numberTicket', data?.numberTicket);
     methods.setValue('status', data?.status);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleClickOpen = () => {

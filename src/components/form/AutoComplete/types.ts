@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { InputLabelProps, AutocompleteProps, ChipProps } from '@mui/material';
 import React from 'react';
 

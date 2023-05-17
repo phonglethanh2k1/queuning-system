@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-param-reassign */
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AppThunk } from 'app/store';
 import {
@@ -101,9 +99,8 @@ export const fetchData =
 const handleCreate = async (data: any) => {
   const equipment = collection(firebaseDatabase, 'device');
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const snapshot = await addDoc(equipment, data);
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+
 };
 
 export const addDeviceAsync = createAsyncThunk('data/addDevice', async (data: any) => {

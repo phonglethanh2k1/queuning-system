@@ -6,8 +6,6 @@ import { Props } from './types';
 
 export * from './types';
 
-// eslint-disable-next-line max-len
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-unnecessary-type-constraint
 const CheckboxGroupField = <E extends unknown = string | number>(props: Props<E>) => {
   const { t } = useTranslation();
   const { name, helperText, ...others } = props;

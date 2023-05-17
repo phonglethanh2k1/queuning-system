@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Axios, { AxiosInstance } from 'axios';
 import { COOKIE_ACCESS_TOKEN } from 'constants/cookie-keys';
 import { getCookie } from './cookieProvider';
@@ -17,7 +16,6 @@ export function initApiClient(baseURL: string): AxiosInstance {
       const accessToken = getCookie(COOKIE_ACCESS_TOKEN);
 
       if (accessToken) {
-        // eslint-disable-next-line no-param-reassign
         headers[AUTHEN_TOKEN] = `${accessToken}`;
       }
 

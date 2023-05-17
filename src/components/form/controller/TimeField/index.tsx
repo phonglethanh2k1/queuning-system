@@ -5,8 +5,7 @@ import TimePicker from 'components/form/TimePicker';
 import InputLabel from '@mui/material/InputLabel';
 import { Box } from '@mui/material';
 import { Props } from './types';
-// eslint-disable-next-line max-len
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-unnecessary-type-constraint
+
 const TimeField = <E extends unknown, T extends unknown>(props: Props<E, T>) => {
   const { name, helperText, label, ...others } = props;
 

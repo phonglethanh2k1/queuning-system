@@ -1,7 +1,3 @@
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable @typescript-eslint/no-var-requires */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 

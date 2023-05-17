@@ -120,7 +120,7 @@ const Tables = (): JSX.Element => {
               }}
             />
           </Box>
-          <Box width="10%">
+          <Box width="20%">
             <Typography variant="body1">Chọn thời gian</Typography>
             <DatePicker
               value={fromDate}
@@ -135,7 +135,7 @@ const Tables = (): JSX.Element => {
           <Box mt={3}>
             <ArrowRightIcon />
           </Box>
-          <Box width="10%" mt={2.5}>
+          <Box width="20%" mt={2.5}>
             <DatePicker
               value={toDate}
               onChange={(newValue: any) => setToDate(newValue)}

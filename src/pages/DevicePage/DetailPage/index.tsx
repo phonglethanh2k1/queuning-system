@@ -14,7 +14,6 @@ const DetailDevicePage = memo((): JSX.Element => {
       const deviceDoc = doc(collection(firebaseDatabase, 'device'), id);
       const deviceData = await getDoc(deviceDoc);
       if (deviceData.exists()) {
-        // eslint-disable-next-line @typescript-eslint/no-shadow
         const device = { id: deviceData.id, ...deviceData.data() } as unknown as Device;
         setDevice(device);
       } else {

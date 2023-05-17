@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/no-unused-prop-types */
 import { Box } from '@mui/material';
 import React, { memo, useState, useCallback } from 'react';
 import SingleInput from './SingleInput';

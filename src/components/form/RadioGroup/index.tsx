@@ -7,8 +7,6 @@ import { Props } from './types';
 export * from './types';
 
 const getItemDefault = (item: unknown) => `${item}`;
-
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-constraint
 const RadioGroup = <E extends unknown = string | number>(props: Props<E>) => {
   const {
     label,
