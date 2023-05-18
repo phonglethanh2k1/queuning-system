@@ -164,7 +164,7 @@ const AddService = (): JSX.Element => {
                     Quy tắc cấp số
                   </Typography>
                 </Grid>
-                <Grid item xs={5} display="flex">
+                <Grid item xs={12} display="flex">
                   <CheckboxGroupField
                     name="checkbox"
                     options={[
@@ -190,18 +190,18 @@ const AddService = (): JSX.Element => {
                   />
                   <Box mt={1.2}>
                     <Box display="flex" alignItems="center">
-                      <Box width="30%">
+                      <Box width="20%">
                         <TextField name="increaseVerb" />
                       </Box>
-                      <Typography>đến</Typography>
-                      <Box width="30%">
+                      <Typography mx={1}>đến</Typography>
+                      <Box width="20%">
                         <TextField name="to" />
                       </Box>
                     </Box>
-                    <Box width="30%">
+                    <Box width="20%">
                       <TextField name="prefix" />
                     </Box>
-                    <Box width="30%">
+                    <Box width="20%">
                       <TextField name="surfix" />
                     </Box>
                   </Box>

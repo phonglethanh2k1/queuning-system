@@ -5,6 +5,7 @@ import {
   addDoc,
   collection,
   doc,
+  getCountFromServer,
   getDocs,
   limit,
   query,
@@ -31,12 +32,14 @@ export interface Data {
 
 interface DataState {
   data: Data[];
+  count: number;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
 const initialState: DataState = {
   data: [],
+  count: 0,
   status: 'idle',
   error: null,
 };
@@ -63,15 +66,18 @@ const dataSlice = createSlice({
         state.data[index] = { ...state.data[index], ...data };
       }
     },
+    setCount: (state, action: PayloadAction<number>) => {
+      state.count = action.payload;
+    },
   },
 });
 
-export const { dataRequested, dataReceived, dataRequestFailed, updateDevice } = dataSlice.actions;
+export const { dataRequested, dataReceived, dataRequestFailed, updateDevice, setCount } = dataSlice.actions;
 
 export default dataSlice.reducer;
 
 export const fetchData =
-  (selectedOperationStt: any, selectedConnectionStt: any): AppThunk =>
+  (selectedOperationStt: any, selectedConnectionStt: any ,page: number): AppThunk =>
   async (dispatch: any) => {
     dispatch(dataRequested());
     try {
@@ -84,7 +90,6 @@ export const fetchData =
         queryString = query(equipment, where('connectionStt', '==', selectedConnectionStt), limit(10));
       }
       const snapshot = await getDocs(queryString);
-
       const result = snapshot.docs.map((docSnap: QueryDocumentSnapshot<any>) => ({
         ...docSnap.data(),
         id: docSnap.id,
@@ -139,3 +144,14 @@ export const updateDeviceAsync = createAsyncThunk('data/updateDevice', async (pa
     console.log(error);
   }
 });
+export const fetchCount = (): AppThunk => async (dispatch: any) => {
+  try {
+    const equipment = collection(firebaseDatabase, 'device');
+    let queryString = query(equipment, limit(10));
+    const coll = collection(firebaseDatabase, 'device');
+    const countSnapshot = await getCountFromServer(coll);
+    dispatch(setCount(countSnapshot.data()?.count));
+  } catch (error) {
+    // Xử lý lỗi
+  }
+};

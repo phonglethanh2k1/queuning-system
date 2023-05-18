@@ -1,4 +1,4 @@
-import { Box, Grid, InputAdornment, Typography } from "@mui/material";
+import { Box, Button, Grid, InputAdornment, TableContainer, Typography } from "@mui/material";
 import Breadcrumb from "components/breadcrumb/Breadcrumb";
 import AutoComplete from "components/form/AutoComplete";
 import TextField from "components/form/TextField";
@@ -6,11 +6,20 @@ import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DatePicker from "components/form/DatePicker";
+import { Link } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
+import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 type Props = {
   service: any;
 };
 const Detail = (props: Props): JSX.Element => {
   const { service } = props;
+  console.log(service)
   const [fromDate, setfromDate] = useState(new Date("10/10/2021"));
   const [toDate, setToDate] = useState(new Date());
 
@@ -27,58 +36,58 @@ const Detail = (props: Props): JSX.Element => {
         <Typography variant="h3" mb={3}>
           Quản lý dịch vụ
         </Typography>
-        <Grid container>
-          <Grid
+        <Grid container spacing={3}>
+          <Grid 
             item
             xs={4}
-            sx={{
+          > 
+            <Box sx={{
               backgroundColor: "common.white",
               borderRadius: 1.2,
               height: "606px",
               p: 2,
-            }}
-          >
-            <Typography variant="h3">Thông tin dịch vụ</Typography>
+            }} >
+            <Typography variant="h3" mb={1.2}>Thông tin dịch vụ</Typography>
             <Grid container>
-              <Grid item xs={8}>
+              <Grid item xs={12} mb={1.2}>
                 <Grid container>
-                  <Grid item xs={4}>
+                  <Grid item xs={6}>
                     <Typography>Mã dịch vụ: </Typography>
                     <Typography py={2}>Tên dịch vụ: </Typography>
                     <Typography>Mô tả:</Typography>
                   </Grid>
-                  <Grid item xs={4}>
-                    <Typography color="GrayText">201</Typography>
+                  <Grid item xs={6}>
+                      <Typography color="GrayText">{service.serviceCode}</Typography>
                     <Typography color="GrayText" py={2}>
-                      Khám tim mạch
+                    {service.serviceName}
                     </Typography>
                     <Typography color="GrayText">
-                      Khám Chuyên các bệnh lý về tim
+                        {service.descrip}
                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-            <Typography variant="h3">Quy tắc cấp số</Typography>
+            <Typography variant="h3" mb={1.2}>Quy tắc cấp số</Typography>
             <Grid container>
-              <Grid item xs={8}>
-                <Grid container>
-                  <Grid item xs={4}>
-                    <Typography>Tăng tự động: </Typography>
-                    <Typography py={2}>Prefix: </Typography>
+              <Grid item xs={12}>
+                <Grid container >
+                  <Grid item xs={6}>
+                    <Typography mb={3}>Tăng tự động: </Typography>
+                    <Typography mb={3}>Prefix: </Typography>
                     <Typography>Reset mỗi ngày</Typography>
                   </Grid>
-                  <Grid item xs={4}>
-                    <Box display="flex" alignItems="center">
-                      <Box width="50%">
+                  <Grid item xs={6}>
+                    <Box display="flex" alignItems="center" mt={-1} mb={1}>
+                      <Box width="50%" >
                         <TextField />
                       </Box>
-                      <Typography>đến</Typography>
-                      <Box width="50%">
+                      <Typography px={2}>đến</Typography>
+                      <Box width="50%" >
                         <TextField />
                       </Box>
                     </Box>
-                    <Box width="50%">
+                    <Box width="50%" >
                       <TextField />
                     </Box>
                     <Typography color="GrayText"></Typography>
@@ -87,101 +96,137 @@ const Detail = (props: Props): JSX.Element => {
               </Grid>
             </Grid>
             <Typography color="GrayText">Ví dụ: 201-2001</Typography>
+            </Box>
           </Grid>
           <Grid
             item
             xs={7}
-            sx={{ backgroundColor: "common.white", p: 2, borderRadius: 1.2 }}
-            display="flex"
-            justifyContent="space-between"
+           
           >
-            <Box width="20%" mr={8}>
-              <Typography variant="body1">Trạng thái</Typography>
-              <AutoComplete
-                sx={{
-                  ".MuiOutlinedInput-root": {
-                    padding: "5px",
-                  },
-                }}
-                options={[
-                  {
-                    id: 1,
-                    label: "Tất cả",
-                  },
-                  {
-                    id: 2,
-                    label: "Đã hoàn thành",
-                  },
-                  {
-                    id: 3,
-                    label: "Đã thực hiện",
-                  },
-                  {
-                    id: 4,
-                    label: "Vắng",
-                  },
-                ]}
-                getItemLabel={(item) => item.label}
-                getItemValue={(item) => item.id}
-                defaultValue={{
-                  id: 1,
-                  label: "Tất cả",
-                }}
-              />
-            </Box>
-            <Box width="20%">
-              <Typography variant="body1">Chọn thời gian</Typography>
+            <Box sx={{ backgroundColor: "common.white", borderRadius: 1.2, p: 2, }}>
+              <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                <Box width="23%" >
+                  <Typography variant="body1">Trạng thái</Typography>
+                  <AutoComplete
+                    sx={{
+                      ".MuiOutlinedInput-root": {
+                        padding: "5px",
+                      },
+                    }}
+                    options={[
+                      {
+                        id: 1,
+                        label: "Tất cả",
+                      },
+                      {
+                        id: 2,
+                        label: "Đã hoàn thành",
+                      },
+                      {
+                        id: 3,
+                        label: "Đã thực hiện",
+                      },
+                      {
+                        id: 4,
+                        label: "Vắng",
+                      },
+                    ]}
+                    getItemLabel={(item) => item.label}
+                    getItemValue={(item) => item.id}
+                    defaultValue={{
+                      id: 1,
+                      label: "Tất cả",
+                    }}
+                  />
+                </Box>
+                <Box width="23%">
+                  <Typography variant="body1">Chọn thời gian</Typography>
 
-              <DatePicker
-                value={fromDate}
-                onChange={(newValue: any) => setfromDate(newValue)}
-                sx={{
-                  ".MuiOutlinedInput-root": {
-                    padding: "4px",
-                  },
-                }}
-              />
-            </Box>
-            <Box mt={3}>
-              <ArrowRightIcon />
-            </Box>
-            <Box width="20%" mt={2.7}>
-              <DatePicker
-                value={toDate}
-                onChange={(newValue: any) => setToDate(newValue)}
-                sx={{
-                  ".MuiOutlinedInput-root": {
-                    padding: "4px",
-                  },
-                }}
-              />
-            </Box>
-
-            <Box width="20%" mr={8}>
-              <Typography variant="body1">Từ khoá</Typography>
-              <TextField
-                placeholder="Nhập từ khóa"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  ".MuiOutlinedInput-input": {
-                    py: "12px",
-                  },
-                }}
-              />
+                  <DatePicker
+                    value={fromDate}
+                    onChange={(newValue: any) => setfromDate(newValue)}
+                    sx={{
+                      ".MuiOutlinedInput-root": {
+                        padding: "4px",
+                      },
+                    }}
+                  />
+                </Box>
+                <Box mt={4}>
+                  <ArrowRightIcon />
+                </Box>
+                <Box width="23%" mt={2.7}>
+                  <DatePicker
+                    value={toDate}
+                    onChange={(newValue: any) => setToDate(newValue)}
+                    sx={{
+                      ".MuiOutlinedInput-root": {
+                        padding: "4px",
+                      },
+                    }}
+                  />
+                </Box>
+                <Box width="23%" >
+                  <Typography variant="body1">Từ khoá</Typography>
+                  <TextField
+                    placeholder="Nhập từ khóa"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                    sx={{
+                      ".MuiOutlinedInput-input": {
+                        py: "12px",
+                      },
+                    }}
+                  />
+                </Box>
+              </Box>
+              <TableContainer sx={{ mt: 3, borderRadius: 1 }}>
+                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">Số thứ tự</TableCell>
+                      <TableCell align="left">Trạng thái </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                      <TableRow >
+                        <TableCell component="th" scope="row" align="center">
+                        2010001
+                        </TableCell>
+                        <TableCell align="left">Đã hoàn thành</TableCell>
+                      </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Box>
           </Grid>
-          <Grid
-            item
-            xs={1}
-            sx={{ backgroundColor: "common.white", p: 2, borderRadius: 1.2 }}
-          >
-            1
+          <Grid item xs={1}>
+            <Link to='/'>
+              <Button
+                sx={{ ml: 6, flexDirection: "column", }}
+                variant="contained"
+                size="medium"
+                startIcon={<EditIcon  sx={{mb: 2, }}/>}
+              >
+                Cập nhật danh sách
+              </Button>
+            </Link>
+            <Link to='/'>
+              <Button
+                sx={{ ml: 6, flexDirection: "column", }}
+                variant="contained"
+                size="medium"
+                startIcon={<SettingsBackupRestoreIcon  sx={{mb: 2, }}/>}
+              >
+                Quay lại
+              </Button>
+              </Link>
+              
           </Grid>
         </Grid>
       </Box>

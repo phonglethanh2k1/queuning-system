@@ -27,8 +27,10 @@ import { Link as RouterLink } from "react-router-dom";
 import AutoComplete from "components/form/AutoComplete";
 import SearchIcon from "@mui/icons-material/Search";
 import { DeviceRoute } from "routers/device/route";
+import BasicPagination from "./Pagination";
 
 const Tables = (): JSX.Element => {
+  const [count, setCount] = useState<number>(0);
   const [selectedOperationStt, setSelectedOperationStt] = useState(
     operationStatus.ALL
   );
@@ -115,8 +117,8 @@ const Tables = (): JSX.Element => {
     </RouterLink>
   );
   useEffect(() => {
-    dispatch(fetchData(selectedOperationStt, selectedConnectionStt));
-  }, [dispatch, selectedOperationStt, selectedConnectionStt]);
+    dispatch(fetchData(selectedOperationStt, selectedConnectionStt, count));
+  }, [dispatch, selectedOperationStt, selectedConnectionStt, count]);
 
   return (
     <>
@@ -258,6 +260,7 @@ const Tables = (): JSX.Element => {
             ))}
           </TableBody>
         </Table>
+        <BasicPagination  />
       </TableContainer>
     </>
   );

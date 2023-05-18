@@ -8,10 +8,10 @@ import { Service } from "types/service";
 
 const UpdateServicePage = memo((): JSX.Element => {
   const { id } = useParams<{ id: string }>();
-  const [device, setDevice] = useState<Service | null>(null);
+  const [service, setService] = useState<Service | null>(null);
 
   useEffect(() => {
-    const fetchDevice = async () => {
+    const fetchService = async () => {
       const serviceDoc = doc(collection(firebaseDatabase, "service"), id);
       const serviceData = await getDoc(serviceDoc);
       if (serviceData.exists()) {
@@ -19,14 +19,14 @@ const UpdateServicePage = memo((): JSX.Element => {
           id: serviceData.id,
           ...serviceData.data(),
         } as unknown as Service;
-        setDevice(service);
+        setService(service);
       } else {
         console.log("No such device");
       }
     };
-    fetchDevice();
+    fetchService();
   }, [id]);
-  if (!device) {
+  if (!service) {
     return <div>Loading...</div>;
   }
   return <UpdateService service={service} />;

@@ -75,7 +75,7 @@ const Tables = (): JSX.Element => {
   // eslint-disable-next-line consistent-return
   const renderUpdate = (detail: Data) => (
     <RouterLink
-      to={`${DeviceRoute.UPDATE_DEVICE.replace(":id", detail.id)}`}
+      to={`${ServiceRoute.UPDATE_SERVICE.replace(":id", detail.id)}`}
       style={{ color: "#4277FF" }}
     >
       Cập nhật
