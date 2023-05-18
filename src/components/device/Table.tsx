@@ -257,10 +257,12 @@ const Tables = (): JSX.Element => {
                 <TableCell align="left">{renderDetail(row)}</TableCell>
                 <TableCell align="left">{renderUpdate(row)}</TableCell>
               </TableRow>
+               
             ))}
           </TableBody>
         </Table>
-        <BasicPagination  />
+          <BasicPagination  />
+       
       </TableContainer>
     </>
   );

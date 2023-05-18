@@ -13,8 +13,8 @@ export default function BasicPagination() {
   const itemsPerPage = 10;
 
   const totalPages = Math.ceil(count / itemsPerPage);
-  const selectedOperationStt = React.useState(operationStatus.ALL)[0];
-  const selectedConnectionStt = useState(connectionStatus.ALL)[0];
+  const [selectedOperationStt, setSelectedOperationStt] = useState(operationStatus.ALL);
+  const [selectedConnectionStt, setSelectedConnectionStt] = useState(connectionStatus.ALL);
   const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page);
     // Thực hiện các thao tác cần thiết khi chuyển page, ví dụ dispatch action để fetch dữ liệu của page mới
@@ -29,12 +29,11 @@ export default function BasicPagination() {
 
   return (
     <Stack spacing={2}>
-      <Typography>{currentPage}</Typography>
       <Pagination
         count={totalPages}
         page={currentPage}
         onChange={handlePageChange}
-        sx={{ '.MuiPagination-ul': { justifyContent: 'end' } }}
+        sx={{ '.MuiPagination-ul': { justifyContent: 'end', mt: 2 } }}
       />
     </Stack>
   );

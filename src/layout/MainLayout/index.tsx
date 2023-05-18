@@ -122,7 +122,7 @@ export default function ResponsiveDrawer() {
           p: 3,
           backgroundColor: "rgba(0,0,0,0.04)",
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          height: "200vh",
+          height: "auto",
         }}
       >
         <Toolbar sx={{ height: 80 }} />

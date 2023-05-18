@@ -9,6 +9,7 @@ import {
   getDocs,
   limit,
   query,
+  startAfter,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -29,7 +30,6 @@ export interface Data {
   password: string;
   id: string;
 }
-
 interface DataState {
   data: Data[];
   count: number;
@@ -43,7 +43,6 @@ const initialState: DataState = {
   status: 'idle',
   error: null,
 };
-
 const dataSlice = createSlice({
   name: 'data',
   initialState,
@@ -78,16 +77,23 @@ export default dataSlice.reducer;
 
 export const fetchData =
   (selectedOperationStt: any, selectedConnectionStt: any ,page: number): AppThunk =>
-  async (dispatch: any) => {
+    async (dispatch: any) => {
     dispatch(dataRequested());
     try {
       const equipment = collection(firebaseDatabase, 'device');
-      let queryString = query(equipment, limit(10));
+      const itemsPerPage = 10;
+      let queryString = query(equipment, limit(itemsPerPage) );
       if (selectedOperationStt !== operationStatus.ALL) {
-        queryString = query(equipment, where('operationStt', '==', selectedOperationStt), limit(10));
+        queryString = query(equipment, where('operationStt', '==', selectedOperationStt), limit(itemsPerPage));
       }
       if (selectedConnectionStt !== connectionStatus.ALL) {
-        queryString = query(equipment, where('connectionStt', '==', selectedConnectionStt), limit(10));
+        queryString = query(equipment, where('connectionStt', '==', selectedConnectionStt), limit(itemsPerPage));
+      }
+
+     if (page > 1) {
+        const snapshot = await getDocs(queryString);
+        const lastVisibleDocument = snapshot.docs[snapshot.docs.length - 1];
+        queryString = query(equipment, startAfter(lastVisibleDocument), limit(itemsPerPage));
       }
       const snapshot = await getDocs(queryString);
       const result = snapshot.docs.map((docSnap: QueryDocumentSnapshot<any>) => ({
@@ -155,3 +161,4 @@ export const fetchCount = (): AppThunk => async (dispatch: any) => {
     // Xử lý lỗi
   }
 };
+
