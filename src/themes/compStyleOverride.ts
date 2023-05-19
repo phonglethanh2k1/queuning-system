@@ -242,5 +242,14 @@ export default function componentStyleOverrides(theme: IThemeOption): Components
         },
       },
     },
+    MuiBreadcrumbs: {
+      styleOverrides: {
+        root: {
+          zIndex: 2,
+          marginTop: '-45px',
+          position: 'fixed',
+        }
+      }
+    }
   };
 }

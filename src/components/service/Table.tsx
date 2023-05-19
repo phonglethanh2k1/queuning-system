@@ -24,6 +24,7 @@ import { DeviceRoute } from "routers/device/route";
 import DatePicker from "components/form/DatePicker";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { ServiceRoute } from "routers/service/route";
+import BasicPagination from "./Pagination";
 const Tables = (): JSX.Element => {
   const dispatch = useDispatch();
   const data = useSelector((state: RootState) => state.service.data);
@@ -82,7 +83,8 @@ const Tables = (): JSX.Element => {
     </RouterLink>
   );
   useEffect(() => {
-    dispatch(fetchData(selectedOperationStt));
+    const page = 0;
+    dispatch(fetchData(selectedOperationStt,page));
   }, [dispatch, selectedOperationStt]);
 
   return (
@@ -197,6 +199,7 @@ const Tables = (): JSX.Element => {
             ))}
           </TableBody>
         </Table>
+        <BasicPagination/>
       </TableContainer>
     </>
   );

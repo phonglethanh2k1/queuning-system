@@ -142,7 +142,6 @@ export const addDeviceAsync = createAsyncThunk('data/addDevice', async (data: an
 
 export const updateDeviceAsync = createAsyncThunk('data/updateDevice', async (payload: UpdateDataPayload) => {
   const { id, values } = payload;
-  console.log(payload);
   const documentRef = doc(firebaseDatabase, 'device', id); // Thay collection-name bằng tên collection của bạn
   try {
     await updateDoc(documentRef, values);

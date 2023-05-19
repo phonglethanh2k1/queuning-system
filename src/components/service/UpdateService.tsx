@@ -8,21 +8,11 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Breadcrumb from "components/breadcrumb/Breadcrumb";
 import CheckboxGroupField from "components/form/controller/CheckboxGroupField";
-import { addServiceAsync } from "redux/slices/serviceSlice";
+import { Data, addServiceAsync, updateServiceAsync } from "redux/slices/serviceSlice";
 import { ServiceRoute } from "routers/service/route";
 
 const validation = yup.object({});
 
-type UpdateService = {
-  serviceCode: string;
-  descrip: string;
-  serviceName: string;
-  increaseVerb: string;
-  to: string;
-  prefix: string;
-  surfix: string;
-  checkbox: number[];
-};
 type Props = {
   service : any
 }
@@ -31,9 +21,10 @@ const UpdateService = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const resolver = useYupValidationResolver(validation);
-  const methods = useForm<UpdateService>({
+  const methods = useForm<any>({
     resolver,
     defaultValues: {
+      id: service.id,
       serviceCode: service.serviceCode,
       descrip: service.descrip,
       serviceName: service.serviceName,
@@ -41,16 +32,18 @@ const UpdateService = (props: Props): JSX.Element => {
       to: service.to,
       prefix: service.prefix,
       surfix: service.surfix,
-      checkbox: service.checkbox,
+      checkbox: [service.checkbox]
     },
   });
-  const handleSubmit = async (values?: UpdateService) => {
+  const {id} = service
+  const handleSubmit = async (values?: Data ) => {
     console.log(values);
-    dispatch<any>(addServiceAsync(values));
+    dispatch<any>(updateServiceAsync({ id, values }));
     navigate(ServiceRoute.SERVICE);
   };
   const handleCancel = () => {
     methods.reset({
+      id: '',
       serviceCode: "",
       descrip: "",
       serviceName: "",
@@ -58,19 +51,20 @@ const UpdateService = (props: Props): JSX.Element => {
       to: "",
       prefix: "",
       surfix: "",
-      checkbox: [1],
+      checkbox: []
     });
   };
   return (
     <>
       <Breadcrumb
         items={[
-          { label: "Dịch vụ" },
-          { label: "Danh sách dịch vụ", to: "/service" },
-          { label: "Thêm dịch vụ", to: "add-service" },
+          { label: "Dịch vụ", to: '' },
+          { label: "Danh sách dịch vụ", to: ServiceRoute.SERVICE },
+          { label: "Chi tiết", to: `${ServiceRoute.SERVICE}/${service.id}`},
+          { label: "Cập nhật", to: `${ServiceRoute.UPDATE_SERVICE.replace(":id", service.id)}` },
         ]}
       />
-      <Box>
+      <Box mt={1}>
         <Typography variant="h3" mb={2}>
           Quản lý dịch vụ
         </Typography>

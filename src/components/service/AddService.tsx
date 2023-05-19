@@ -11,6 +11,7 @@ import Breadcrumb from "components/breadcrumb/Breadcrumb";
 import CheckboxGroupField from "components/form/controller/CheckboxGroupField";
 import { addServiceAsync } from "redux/slices/serviceSlice";
 import { ServiceRoute } from "routers/service/route";
+import { operationStatus } from "types/service";
 
 const validation = yup.object({});
 
@@ -22,6 +23,7 @@ type AddService = {
   to: string;
   prefix: string;
   surfix: string;
+  operationStt?: operationStatus,
   checkbox: number[];
 };
 const AddService = (): JSX.Element => {
@@ -38,11 +40,11 @@ const AddService = (): JSX.Element => {
       to: "",
       prefix: "",
       surfix: "",
-      checkbox: [1],
+      operationStt: 1,
+      checkbox: [],
     },
   });
   const handleSubmit = async (values?: AddService) => {
-    console.log(values);
     dispatch<any>(addServiceAsync(values));
     navigate(ServiceRoute.SERVICE);
   };
@@ -62,12 +64,12 @@ const AddService = (): JSX.Element => {
     <>
       <Breadcrumb
         items={[
-          { label: "Dịch vụ" },
-          { label: "Danh sách dịch vụ", to: "/service" },
-          { label: "Thêm dịch vụ", to: "add-service" },
+          { label: "Dịch vụ", to: '' },
+          { label: "Danh sách dịch vụ", to: ServiceRoute.SERVICE },
+          { label: "Thêm dịch vụ", to: ServiceRoute.ADD_SERVICE },
         ]}
       />
-      <Box>
+      <Box mt={1}>
         <Typography variant="h3" mb={2}>
           Quản lý dịch vụ
         </Typography>

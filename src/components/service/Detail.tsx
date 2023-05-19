@@ -14,12 +14,12 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { ServiceRoute } from "routers/service/route";
 type Props = {
   service: any;
 };
 const Detail = (props: Props): JSX.Element => {
   const { service } = props;
-  console.log(service)
   const [fromDate, setfromDate] = useState(new Date("10/10/2021"));
   const [toDate, setToDate] = useState(new Date());
 
@@ -27,12 +27,12 @@ const Detail = (props: Props): JSX.Element => {
     <>
       <Breadcrumb
         items={[
-          { label: "Dịch vụ" },
-          { label: "Danh sách dịch vụ", to: "/service" },
-          { label: "chi tiết", to: "/service" },
+          { label: "Dịch vụ", to: "", },
+          { label: "Danh sách dịch vụ", to: ServiceRoute.SERVICE, },
+          { label: "Chi tiết", to: `${ServiceRoute.SERVICE}/${service.id}`},
         ]}
       />
-      <Box>
+      <Box mt={1}>
         <Typography variant="h3" mb={3}>
           Quản lý dịch vụ
         </Typography>
@@ -80,15 +80,15 @@ const Detail = (props: Props): JSX.Element => {
                   <Grid item xs={6}>
                     <Box display="flex" alignItems="center" mt={-1} mb={1}>
                       <Box width="50%" >
-                        <TextField />
+                        <TextField value={service.increaseVerb}/>
                       </Box>
                       <Typography px={2}>đến</Typography>
                       <Box width="50%" >
-                        <TextField />
+                        <TextField value={service.to}/>
                       </Box>
                     </Box>
                     <Box width="50%" >
-                      <TextField />
+                      <TextField value={service.prefix}/>
                     </Box>
                     <Typography color="GrayText"></Typography>
                   </Grid>
@@ -206,7 +206,7 @@ const Detail = (props: Props): JSX.Element => {
             </Box>
           </Grid>
           <Grid item xs={1}>
-            <Link to='/'>
+            <Link to={`${ServiceRoute.UPDATE_SERVICE.replace(":id", service.id)}`}>
               <Button
                 sx={{ ml: 6, flexDirection: "column", }}
                 variant="contained"
@@ -216,7 +216,7 @@ const Detail = (props: Props): JSX.Element => {
                 Cập nhật danh sách
               </Button>
             </Link>
-            <Link to='/'>
+            <Link to={ServiceRoute.SERVICE}>
               <Button
                 sx={{ ml: 6, flexDirection: "column", }}
                 variant="contained"

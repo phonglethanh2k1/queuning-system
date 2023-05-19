@@ -6,18 +6,19 @@ import { Link } from "react-router-dom";
 import { DeviceRoute } from "routers/device/route";
 import Tables from "./Table";
 import Breadcrumb from "components/breadcrumb/Breadcrumb";
+import { LevelNoRoute } from "routers/levelNo/route";
 
-const Device = (): JSX.Element => (
+const LevelNo = (): JSX.Element => (
   <>
     <Breadcrumb
       items={[
-        { label: "Thiết bị" , to: '' },
-        { label: "Danh sách thiết bị", to: DeviceRoute.DEVICE },
+        { label: "Cấp số" , to: '' },
+        { label: "Danh sách cấp số", to: LevelNoRoute.LEVEL_NO },
       ]}
     />
     <Box mt={1} >
       <Typography variant="h3" mb={2}>
-        Danh Sách thiết bị
+      Quản lý cấp số
       </Typography>
       <Grid container>
         <Grid item xs={11} />
@@ -40,4 +41,4 @@ const Device = (): JSX.Element => (
     </Box>
   </>
 );
-export default Device;
+export default LevelNo;

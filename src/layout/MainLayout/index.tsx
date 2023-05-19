@@ -33,6 +33,7 @@ export default function ResponsiveDrawer() {
           bgcolor: "common.white",
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          zIndex: 1,
         }}
       >
         <Toolbar
@@ -125,7 +126,7 @@ export default function ResponsiveDrawer() {
           height: "auto",
         }}
       >
-        <Toolbar sx={{ height: 80 }} />
+        <Toolbar />
         <Outlet />
       </Box>
     </Box>

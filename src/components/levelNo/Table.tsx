@@ -12,10 +12,11 @@ import {
   Box,
   TextField,
   InputAdornment,
+  Grid,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "app/store";
-import { Data, fetchData } from "redux/slices/dataSlice";
+import { Data, fetchData } from "redux/slices/levelNoSlices";
 import {
   ConnectionStatusOption,
   OperationStatusOption,
@@ -28,8 +29,11 @@ import AutoComplete from "components/form/AutoComplete";
 import SearchIcon from "@mui/icons-material/Search";
 import { DeviceRoute } from "routers/device/route";
 import BasicPagination from "./Pagination";
-
+import DatePicker from "components/form/DatePicker";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 const Tables = (): JSX.Element => {
+  const [fromDate, setfromDate] = useState(new Date("10/10/2021"));
+  const [toDate, setToDate] = useState(new Date());
   const [count, setCount] = useState<number>(0);
   const [selectedOperationStt, setSelectedOperationStt] = useState(
     operationStatus.ALL
@@ -45,7 +49,8 @@ const Tables = (): JSX.Element => {
     setSelectedConnectionStt(newValue.id);
   };
   const dispatch = useDispatch();
-  const data = useSelector((state: RootState) => state.data.data);
+  const data = useSelector((state: RootState) => state.levelNo.data);
+  console.log(data)
   // const status = useSelector((state: RootState) => state.data.status);
   // const error = useSelector((state: RootState) => state.data.error);
   const renderOperationStt = (operationStt: operationStatus) => {
@@ -69,7 +74,7 @@ const Tables = (): JSX.Element => {
         startIcon={<FiberManualRecordIcon color="success" />}
         sx={{ py: 1, px: 0 }}
       >
-        Hoạt động
+        Đã sử dụng
       </Button>
     );
   };
@@ -117,15 +122,15 @@ const Tables = (): JSX.Element => {
     </RouterLink>
   );
   useEffect(() => {
-    dispatch(fetchData(selectedOperationStt, selectedConnectionStt, count));
+    dispatch(fetchData(selectedOperationStt, selectedConnectionStt, ));
   }, [dispatch, selectedOperationStt, selectedConnectionStt, count]);
 
   return (
     <>
-      <Box display="flex">
-        <Box flexGrow={1} display="flex">
-          <Box width="20%" mr={8}>
-            <Typography variant="body1">Trạng thái hoạt động</Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
+          <Box >
+            <Typography variant="body1">Tên dịch vụ</Typography>
             <AutoComplete
               onChange={handleOperationSttChange}
               sx={{
@@ -135,28 +140,34 @@ const Tables = (): JSX.Element => {
               }}
               options={[
                 {
-                  id: operationStatus.ALL,
-                  label: OperationStatusOption[operationStatus.ALL].label,
+                  id: 1,
+                  label: 'Tất cả',
                 },
                 {
-                  id: operationStatus.ON,
-                  label: OperationStatusOption[operationStatus.ON].label,
+                  id: 2,
+                  label: 'Khám sản - Phụ khoa',
                 },
                 {
-                  id: operationStatus.OFF,
-                  label: OperationStatusOption[operationStatus.OFF].label,
+                  id: 3,
+                  label: 'Khám răng hàm mặt',
+                },
+                {
+                  id: 4,
+                  label: 'Khám tai mũi họng',
                 },
               ]}
               getItemLabel={(item) => item.label}
               getItemValue={(item) => item.id}
               defaultValue={{
-                id: operationStatus.ALL,
-                label: OperationStatusOption[operationStatus.ALL].label,
+                id: 1,
+                label: 'Tất cả',
               }}
             />
           </Box>
-          <Box width="20%">
-            <Typography variant="body1">Trạng thái kết nối</Typography>
+        </Grid>
+        <Grid item xs={2}>
+          <Box>
+            <Typography variant="body1">Tình trạng</Typography>
             <AutoComplete
               onChange={handleConnectionSttChange}
               sx={{
@@ -166,28 +177,97 @@ const Tables = (): JSX.Element => {
               }}
               options={[
                 {
-                  id: connectionStatus.ALL,
-                  label: ConnectionStatusOption[connectionStatus.ALL].label,
+                  id: 1,
+                  label: 'Tất cả',
                 },
                 {
-                  id: connectionStatus.ON,
-                  label: ConnectionStatusOption[connectionStatus.ON].label,
+                  id: 2,
+                  label: 'Đang chờ',
                 },
                 {
-                  id: connectionStatus.OFF,
-                  label: ConnectionStatusOption[connectionStatus.OFF].label,
+                  id: 3,
+                  label: 'Đã sử dụng',
+                },
+                {
+                  id: 4,
+                  label: 'Bỏ qua',
                 },
               ]}
               getItemLabel={(item) => item.label}
               getItemValue={(item) => item.id}
               defaultValue={{
-                id: connectionStatus.ALL,
-                label: ConnectionStatusOption[connectionStatus.ALL].label,
+                id: 1,
+                label: 'Tất cả',
+              }}
+            />
+        </Box>
+        </Grid>
+        <Grid item xs={2}>
+          <Box>
+            <Typography variant="body1">Nguồn cấp</Typography>
+            <AutoComplete
+              onChange={handleConnectionSttChange}
+              sx={{
+                ".MuiOutlinedInput-root": {
+                  padding: "5px",
+                },
+              }}
+              options={[
+                {
+                  id: 1,
+                  label: 'Tất cả',
+                },
+                {
+                  id: 2,
+                  label: 'Kiosk',
+                },
+                {
+                  id: 3,
+                  label: 'Hệ thống',
+                },
+              ]}
+              getItemLabel={(item) => item.label}
+              getItemValue={(item) => item.id}
+              defaultValue={{
+                id: 1,
+                label: 'Tất cả',
+              }}
+            />
+        </Box>
+        </Grid>
+        <Grid item xs={2} display='flex' alignItems='center'>
+          <Box>
+            <Typography variant="body1">Chọn thời gian</Typography>
+            <DatePicker
+              value={fromDate}
+              onChange={(newValue: any) => setfromDate(newValue)}
+              sx={{
+                ".MuiOutlinedInput-root": {
+                  padding: "4px",
+                },
               }}
             />
           </Box>
-        </Box>
-        <Box>
+          <Box mt={3} mr={-2}>
+            <ArrowRightIcon />
+          </Box>
+          
+        </Grid>
+        <Grid item xs={2}>
+          <Box  mt={2.8}>
+            <DatePicker
+              value={toDate}
+              onChange={(newValue: any) => setToDate(newValue)}
+              sx={{
+                ".MuiOutlinedInput-root": {
+                  padding: "4px",
+                },
+              }}
+            />
+            </Box>
+            </Grid>
+        <Grid item xs={2}>
+          <Box>
           <Typography variant="body1">Từ khóa</Typography>
           <TextField
             placeholder="Nhập từ khóa"
@@ -204,20 +284,21 @@ const Tables = (): JSX.Element => {
               },
             }}
           />
-        </Box>
-      </Box>
+          </Box>
+        </Grid>
+      </Grid>
 
       <TableContainer sx={{ mt: 3, borderRadius: 1 }}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">Mã thiết bị</TableCell>
-              <TableCell align="left">Tên thiết bị</TableCell>
-              <TableCell align="left">Địa chỉ IP</TableCell>
-              <TableCell align="left">Trạng thái hoạt động</TableCell>
-              <TableCell align="left">Trạng thái kết nối</TableCell>
-              <TableCell align="left">Dịch vụ sử dụng</TableCell>
-              <TableCell align="left" />
+              <TableCell align="center">STT</TableCell>
+              <TableCell align="center">Tên Khách hàng</TableCell>
+              <TableCell align="left">Tên dịch vụ</TableCell>
+              <TableCell align="left">Thời gian cấp</TableCell>
+              <TableCell align="left">Hạn sử dụng</TableCell>
+              <TableCell align="left">Trạng thái </TableCell>
+              <TableCell align="left">Nguồn cấp</TableCell>
               <TableCell align="left" />
             </TableRow>
           </TableHead>
@@ -225,37 +306,21 @@ const Tables = (): JSX.Element => {
             {data.map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row" align="center">
-                  {row.deviceCode}
+                  {row.stt}
                 </TableCell>
-                <TableCell align="left">{row.deviceName}</TableCell>
-                <TableCell align="left">{row.addressIP}</TableCell>
+                <TableCell component="th" scope="row" align="center">
+                  {row.customerName}
+                </TableCell>
+                <TableCell align="left">{row.serviceName}</TableCell>
+                <TableCell align="left">{row.timeLevel}</TableCell>
+                <TableCell align="left">{row.expiry}</TableCell>
                 <TableCell align="left">
-                  {renderOperationStt(row.operationStt)}
+                  {renderOperationStt(row.status)}
                 </TableCell>
                 <TableCell align="left">
-                  {renderConnectionStt(row.connectionStt)}
-                </TableCell>
-                <TableCell align="left">
-                  <Typography
-                    textOverflow="ellipsis"
-                    whiteSpace="nowrap"
-                    overflow="hidden"
-                    width="280px"
-                    sx={{ color: "grey.800" }}
-                  >
-                    {row.serviceUsed}
-                  </Typography>
-                  <Link
-                    href="/"
-                    component="button"
-                    variant="body1"
-                    underline="hover"
-                  >
-                    Xem thêm...
-                  </Link>
+                  {row.powerSupply}
                 </TableCell>
                 <TableCell align="left">{renderDetail(row)}</TableCell>
-                <TableCell align="left">{renderUpdate(row)}</TableCell>
               </TableRow>
                
             ))}

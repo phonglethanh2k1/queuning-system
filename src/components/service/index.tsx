@@ -11,11 +11,11 @@ const Service = (): JSX.Element => (
   <>
     <Breadcrumb
       items={[
-        { label: "Dịch vụ" },
-        { label: "Danh sách dịch vụ", to: "/service" },
+        { label: "Dịch vụ", to: '' },
+        { label: "Danh sách dịch vụ", to: ServiceRoute.SERVICE },
       ]}
     />
-    <Box>
+    <Box mt={1}> 
       <Box>
         <Typography variant="h3" mb={2}>
           Quản lý dịch vụ

@@ -20,16 +20,14 @@ interface UpdateDataPayload {
   values: any;
 }
 export interface Data {
-  serviceCode: string;
+  stt: string;
+  customerName: string;
   serviceName: string;
-  descrip: string;
-  operationStt: operationStatus;
-  id: string;
-  increaseVerb: string;
-  to: string;
-  prefix: string;
-  surfix: string;
-  Checkbox: number[]
+  timeLevel: string;
+  expiry: string;
+  status: number;
+  powerSupply: string
+  id: string
 }
 
 interface DataState {
@@ -46,7 +44,7 @@ const initialState: DataState = {
   error: null,
 };
 
-const serviceSlice = createSlice({
+const levelNoSlices= createSlice({
   name: "data",
   initialState,
   reducers: {
@@ -78,16 +76,16 @@ const serviceSlice = createSlice({
 });
 
 export const { dataRequested, dataReceived, dataRequestFailed, updateService,setCount } =
-  serviceSlice.actions;
+levelNoSlices.actions;
 
-export default serviceSlice.reducer;
+export default levelNoSlices.reducer;
 
 export const fetchData =
   (selectedOperationStt: any,page: number): AppThunk =>
   async (dispatch: any) => {
     dispatch(dataRequested());
     try {
-      const equipment = collection(firebaseDatabase, "service");
+      const equipment = collection(firebaseDatabase, "levelNo");
       const itemsPerPage = 10;
       let queryString = query(equipment, limit(10));
       if (selectedOperationStt !== operationStatus.ALL) {
