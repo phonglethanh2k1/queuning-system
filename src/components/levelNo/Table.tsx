@@ -8,7 +8,6 @@ import {
   Button,
   TableContainer,
   Typography,
-  Link,
   Box,
   TextField,
   InputAdornment,
@@ -17,44 +16,59 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "app/store";
 import { Data, fetchData } from "redux/slices/levelNoSlices";
-import {
-  ConnectionStatusOption,
-  OperationStatusOption,
-  connectionStatus,
-  operationStatus,
-} from "types/device";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { Link as RouterLink } from "react-router-dom";
+import { Link  } from "react-router-dom";
 import AutoComplete from "components/form/AutoComplete";
 import SearchIcon from "@mui/icons-material/Search";
-import { DeviceRoute } from "routers/device/route";
 import BasicPagination from "./Pagination";
 import DatePicker from "components/form/DatePicker";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { LevelNoRoute } from "routers/levelNo/route";
+import { nameService, nameServiceOption, powerSupply, powerSupplyOption, status, statusOption } from "types/levelNo";
 const Tables = (): JSX.Element => {
   const [fromDate, setfromDate] = useState(new Date("10/10/2021"));
   const [toDate, setToDate] = useState(new Date());
   const [count, setCount] = useState<number>(0);
-  const [selectedOperationStt, setSelectedOperationStt] = useState(
-    operationStatus.ALL
+  const [selectedServiceName, setSelectedServiceName] = useState(
+   nameService.ALL
   );
-  const [selectedConnectionStt, setSelectedConnectionStt] = useState(
-    connectionStatus.ALL
+  const [selectedStatus, setSelectedStatus] = useState(
+    status.ALL
   );
-  const handleOperationSttChange = (event: any, newValue: any) => {
-    setSelectedOperationStt(newValue.id);
+  const [selectedPowerSupply, setSelectedPowerSupply] = useState(
+    powerSupply.ALL
+   );
+  const handleServiceName = (event: any, newValue: any) => {
+    setSelectedServiceName(newValue.id);
   };
-
-  const handleConnectionSttChange = (event: any, newValue: any) => {
-    setSelectedConnectionStt(newValue.id);
+  const handleStatus = (event: any, newValue: any) => {
+    setSelectedStatus(newValue.id);
+  };
+  const handlePowerSupply = (event: any, newValue: any) => {
+    setSelectedPowerSupply(newValue.id);
   };
   const dispatch = useDispatch();
   const data = useSelector((state: RootState) => state.levelNo.data);
-  console.log(data)
   // const status = useSelector((state: RootState) => state.data.status);
   // const error = useSelector((state: RootState) => state.data.error);
-  const renderOperationStt = (operationStt: operationStatus) => {
-    if (operationStt === operationStatus.OFF) {
+  const renderStatus = (
+    status: number) => {
+    if (
+      status === 0) {
+      return (
+        <Button
+          size="medium"
+          variant="text"
+          startIcon={<FiberManualRecordIcon color="secondary" />}
+          sx={{ py: 1, px: 0 }}
+        >
+         Đang chờ
+        </Button>
+      );
+    }
+    
+    if (
+      status === -1) {
       return (
         <Button
           size="medium"
@@ -62,68 +76,34 @@ const Tables = (): JSX.Element => {
           startIcon={<FiberManualRecordIcon color="error" />}
           sx={{ py: 1, px: 0 }}
         >
-          Ngưng hoạt động
+         Bỏ qua
         </Button>
       );
     }
-
     return (
       <Button
         size="medium"
         variant="text"
-        startIcon={<FiberManualRecordIcon color="success" />}
+        startIcon={<FiberManualRecordIcon color="info" />}
         sx={{ py: 1, px: 0 }}
       >
         Đã sử dụng
       </Button>
     );
   };
-  const renderConnectionStt = (connectionStt: connectionStatus) => {
-    if (connectionStt === connectionStatus.OFF) {
-      return (
-        <Button
-          size="medium"
-          variant="text"
-          startIcon={<FiberManualRecordIcon color="error" />}
-          sx={{ py: 1, px: 0 }}
-        >
-          Mất kết nối
-        </Button>
-      );
-    }
-
-    return (
-      <Button
-        size="medium"
-        variant="text"
-        startIcon={<FiberManualRecordIcon color="success" />}
-        sx={{ py: 1, px: 0 }}
+  const renderDetail = (detail: Data) => {
+    return  (
+      <Link
+        to={`${LevelNoRoute.DETAIL_LEVEL_NO.replace(":id", detail.id)}`}
+        style={{ color: "#4277FF" }}
       >
-        Kết nối
-      </Button>
+        Chi tiết
+      </Link>
     );
-  };
-  // eslint-disable-next-line consistent-return
-  const renderDetail = (detail: Data) => (
-    <RouterLink
-      to={`${DeviceRoute.DEVICE}/${detail.id}`}
-      style={{ color: "#4277FF" }}
-    >
-      Chi tiết
-    </RouterLink>
-  );
-  // eslint-disable-next-line consistent-return
-  const renderUpdate = (detail: Data) => (
-    <RouterLink
-      to={`${DeviceRoute.UPDATE_DEVICE.replace(":id", detail.id)}`}
-      style={{ color: "#4277FF" }}
-    >
-      Cập nhật
-    </RouterLink>
-  );
+  }
   useEffect(() => {
-    dispatch(fetchData(selectedOperationStt, selectedConnectionStt, ));
-  }, [dispatch, selectedOperationStt, selectedConnectionStt, count]);
+    dispatch(fetchData(selectedServiceName , selectedStatus,selectedPowerSupply, count));
+  }, [dispatch, selectedServiceName, selectedStatus, selectedPowerSupply,count]);
 
   return (
     <>
@@ -132,7 +112,7 @@ const Tables = (): JSX.Element => {
           <Box >
             <Typography variant="body1">Tên dịch vụ</Typography>
             <AutoComplete
-              onChange={handleOperationSttChange}
+              onChange={handleServiceName}
               sx={{
                 ".MuiOutlinedInput-root": {
                   padding: "5px",
@@ -140,27 +120,27 @@ const Tables = (): JSX.Element => {
               }}
               options={[
                 {
-                  id: 1,
-                  label: 'Tất cả',
+                  id: nameService.ALL,
+                  label: nameServiceOption[nameService.ALL].label,
                 },
                 {
-                  id: 2,
-                  label: 'Khám sản - Phụ khoa',
+                  id: nameService.KHAM1,
+                  label: nameServiceOption[nameService.KHAM1].label,
                 },
                 {
-                  id: 3,
-                  label: 'Khám răng hàm mặt',
+                  id: nameService.KHAM2,
+                  label: nameServiceOption[nameService.KHAM2].label,
                 },
                 {
-                  id: 4,
-                  label: 'Khám tai mũi họng',
+                  id: nameService.KHAM3,
+                  label: nameServiceOption[nameService.KHAM3].label,
                 },
               ]}
               getItemLabel={(item) => item.label}
               getItemValue={(item) => item.id}
               defaultValue={{
-                id: 1,
-                label: 'Tất cả',
+                id: nameService.ALL,
+                label: nameServiceOption[nameService.ALL].label,
               }}
             />
           </Box>
@@ -169,7 +149,7 @@ const Tables = (): JSX.Element => {
           <Box>
             <Typography variant="body1">Tình trạng</Typography>
             <AutoComplete
-              onChange={handleConnectionSttChange}
+              onChange={handleStatus}
               sx={{
                 ".MuiOutlinedInput-root": {
                   padding: "5px",
@@ -177,27 +157,27 @@ const Tables = (): JSX.Element => {
               }}
               options={[
                 {
-                  id: 1,
-                  label: 'Tất cả',
+                  id: status.ALL,
+                  label: statusOption[status.ALL].label,
                 },
                 {
-                  id: 2,
-                  label: 'Đang chờ',
+                  id: status.WAITING,
+                  label:  statusOption[status.WAITING].label,
                 },
                 {
-                  id: 3,
-                  label: 'Đã sử dụng',
+                  id: status.USED,
+                  label:  statusOption[status.USED].label,
                 },
                 {
-                  id: 4,
-                  label: 'Bỏ qua',
+                  id: status.SKIP,
+                  label: statusOption[status.SKIP].label,
                 },
               ]}
               getItemLabel={(item) => item.label}
               getItemValue={(item) => item.id}
               defaultValue={{
-                id: 1,
-                label: 'Tất cả',
+                id: status.ALL,
+                label: statusOption[status.ALL].label,
               }}
             />
         </Box>
@@ -206,7 +186,7 @@ const Tables = (): JSX.Element => {
           <Box>
             <Typography variant="body1">Nguồn cấp</Typography>
             <AutoComplete
-              onChange={handleConnectionSttChange}
+              onChange={handlePowerSupply}
               sx={{
                 ".MuiOutlinedInput-root": {
                   padding: "5px",
@@ -214,16 +194,16 @@ const Tables = (): JSX.Element => {
               }}
               options={[
                 {
-                  id: 1,
-                  label: 'Tất cả',
+                  id: powerSupply.ALL,
+                  label: powerSupplyOption[powerSupply.ALL].label,
                 },
                 {
-                  id: 2,
-                  label: 'Kiosk',
+                  id: powerSupply.KIOSK,
+                  label: powerSupplyOption[powerSupply.KIOSK].label,
                 },
                 {
-                  id: 3,
-                  label: 'Hệ thống',
+                  id: powerSupply.HETHONG,
+                  label:powerSupplyOption[powerSupply.HETHONG].label,
                 },
               ]}
               getItemLabel={(item) => item.label}
@@ -315,7 +295,7 @@ const Tables = (): JSX.Element => {
                 <TableCell align="left">{row.timeLevel}</TableCell>
                 <TableCell align="left">{row.expiry}</TableCell>
                 <TableCell align="left">
-                  {renderOperationStt(row.status)}
+                  {renderStatus(row.status)}
                 </TableCell>
                 <TableCell align="left">
                   {row.powerSupply}

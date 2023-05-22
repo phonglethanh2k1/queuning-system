@@ -70,13 +70,11 @@ export const powerSupplyOption = {
     label: "Hệ thống",
   },
 };
-export type LevelNo = {
+export type Report = {
   id: string;
   stt: string;
-  customerName: string;
   serviceName: nameService;
   timeLevel: string;
-  expiry: string;
   status: status;
   powerSupply: powerSupply
 };

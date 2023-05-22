@@ -1,29 +1,30 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import {  Button, Grid, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 
 import EditIcon from "@mui/icons-material/Edit";
-import { DeviceRoute } from "routers/device/route";
 import Breadcrumb from "components/breadcrumb/Breadcrumb";
+import { LevelNo } from "types/levelNo";
+import { LevelNoRoute } from "routers/levelNo/route";
 
 type Props = {
-  device: any;
+  levelNo: LevelNo;
 };
 
 const Detail = (props: Props): JSX.Element => {
-  const { device } = props;
+  const { levelNo } = props;
   return (
     <>
       <Breadcrumb
         items={[
-          { label: "Thiết bị", to:DeviceRoute.DEVICE },
-          { label: "Danh sách thiết bị", to: DeviceRoute.DEVICE },
-          { label: "Chi tiết thiết bị", to: `${DeviceRoute.DEVICE}/${device.id}`},
+          { label: "Cấp số", to: '' },
+          { label: "Danh sách cấp số", to: LevelNoRoute.LEVEL_NO },
+          { label: "Chi tiết", to: `${LevelNoRoute.LEVEL_NO}/${levelNo.id}`},
         ]}
       />
       <Grid container mt={1}>
         <Typography variant="h3" mb={3}>
-          Quản lý thiết bị
+          Quản lý cấp số
         </Typography>
         <Grid
           sx={{
@@ -37,60 +38,60 @@ const Detail = (props: Props): JSX.Element => {
           xs={11}
         >
           <Typography variant="body2" fontWeight="700" mb={2}>
-            Thông tin thiết bị
+            Thông tin cấp số
           </Typography>
           <Grid container>
             <Grid item xs={6}>
               <Grid container>
                 <Grid item xs={3}>
-                  <Typography>Mã thiết bị: </Typography>
-                  <Typography py={2}>Tên thiết bị:</Typography>
-                  <Typography>Địa chỉ IP:</Typography>
+                  <Typography>Họ tên: </Typography>
+                  <Typography>Tên dịch vụ:</Typography>
+                  <Typography>Số thứ tự:</Typography>
+                  <Typography>Thời gian cấp:</Typography>
+                  <Typography>Hạn sử dụng:</Typography>
                 </Grid>
                 <Grid item xs={3}>
-                  <Typography color="GrayText">{device.deviceCode}</Typography>
-                  <Typography color="GrayText" py={2}>
-                    {device.deviceName}
+                  <Typography color="GrayText">{levelNo.customerName}</Typography>
+                  <Typography color="GrayText" >
+                    {levelNo.serviceName}
                   </Typography>
-                  <Typography color="GrayText"> {device.addressIP}</Typography>
+                  <Typography color="GrayText"> {levelNo.stt}</Typography>
+                  <Typography color="GrayText"> {levelNo.timeLevel}</Typography>
+                  <Typography color="GrayText"> {levelNo.expiry}</Typography>
                 </Grid>
               </Grid>
             </Grid>
             <Grid item xs={6}>
               <Grid container>
                 <Grid item xs={3}>
-                  <Typography>Loại thiết bị:</Typography>
-                  <Typography py={2}>Tên đăng nhập:</Typography>
-                  <Typography>Mật khẩu:</Typography>
+                  <Typography>Nguồn cấp:</Typography>
+                  <Typography>Trạng thái:</Typography>
+                  <Typography>Số điện thoại:</Typography>
+                  <Typography>Địa chỉ Email:</Typography>
                 </Grid>
                 <Grid item xs={3}>
                   <Typography color="GrayText">
-                    {device.typeofDevice}
+                    {levelNo.powerSupply}
                   </Typography>
-                  <Typography color="GrayText" py={2}>
-                    {device.userName}
+                  <Typography color="GrayText" >
+                    {levelNo.status}
                   </Typography>
-                  <Typography color="GrayText">{device.password}</Typography>
+                  {/* <Typography color="GrayText">{levelNo.phone}</Typography>
+                  <Typography color="GrayText">{levelNo.phone}</Typography> */}
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Typography mt={2}>Dịch vụ sử dụng:</Typography>
-            </Grid>
-            <Typography mt={2} color="GrayText">
-              {device.serviceUsed}
-            </Typography>
           </Grid>
         </Grid>
         <Grid item xs={1}>
-          <Link to={`${DeviceRoute.UPDATE_DEVICE.replace(":id", device.id)}`}>
+          <Link to={`${LevelNoRoute.LEVEL_NO}`}>
             <Button
               sx={{ ml: 6, flexDirection: "column" }}
               variant="contained"
               size="medium"
               startIcon={<EditIcon sx={{ mb: 1 }} />}
             >
-              Cập nhật thiết bị
+              Quay lại
             </Button>
           </Link>
         </Grid>

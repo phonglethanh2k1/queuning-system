@@ -8,7 +8,6 @@ import { Device } from 'types/device';
 const DetailDevicePage = memo((): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const [device, setDevice] = useState<Device | null>(null);
-
   useEffect(() => {
     const fetchDevice = async () => {
       const deviceDoc = doc(collection(firebaseDatabase, 'device'), id);

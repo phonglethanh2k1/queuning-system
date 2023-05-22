@@ -13,7 +13,7 @@ import {
   where,
 } from "firebase/firestore";
 import { firebaseDatabase } from "firebaseApp/config";
-import { nameService, powerSupply, status } from "types/levelNo";
+import { nameService, powerSupply, status } from "types/report";
 interface UpdateDataPayload {
   id: string;
   values: any;
@@ -21,10 +21,8 @@ interface UpdateDataPayload {
 export interface Data {
   id: string;
   stt: string;
-  customerName: string;
   serviceName: string;
   timeLevel: string;
-  expiry: string;
   status: number;
   powerSupply: string;
 }
@@ -43,7 +41,7 @@ const initialState: DataState = {
   error: null,
 };
 
-const levelNoSlices= createSlice({
+const reportSlices= createSlice({
   name: "data",
   initialState,
   reducers: {
@@ -75,16 +73,16 @@ const levelNoSlices= createSlice({
 });
 
 export const { dataRequested, dataReceived, dataRequestFailed, updateService,setCount } =
-levelNoSlices.actions;
+reportSlices.actions;
 
-export default levelNoSlices.reducer;
+export default reportSlices.reducer;
 
 export const fetchData =
   (selectedServiceName: nameService, selectedStatus: status,selectedPowerSupply: powerSupply, page: number): AppThunk =>
   async (dispatch: any) => {
     dispatch(dataRequested());
     try {
-      const equipment = collection(firebaseDatabase, "levelNo");
+      const equipment = collection(firebaseDatabase, "report");
       const itemsPerPage = 10;
       let queryString = query(equipment, limit(10));
       if (selectedServiceName !== nameService.ALL) {

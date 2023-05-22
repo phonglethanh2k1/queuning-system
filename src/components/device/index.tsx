@@ -24,7 +24,7 @@ const Device = (): JSX.Element => (
         <Grid item xs={11}>
           <Tables />
         </Grid>
-        <Grid item xs={1} mt={3}>
+        <Grid item xs={1} mt={12}>
           <Link to={DeviceRoute.ADD_DEVICE}>
             <Button
               sx={{ ml: 6, flexDirection: "column" }}

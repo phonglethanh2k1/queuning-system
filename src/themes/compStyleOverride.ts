@@ -127,7 +127,6 @@ export default function componentStyleOverrides(theme: IThemeOption): Components
             marginLeft: 15,
             color: '',
           },
-
           '& fieldset': {
             borderColor: theme.colors?.grey500,
           },

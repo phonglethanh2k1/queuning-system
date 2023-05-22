@@ -3,16 +3,17 @@ import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
-import Tables from "./Table";
 import Breadcrumb from "components/breadcrumb/Breadcrumb";
 import { LevelNoRoute } from "routers/levelNo/route";
-
-const LevelNo = (): JSX.Element => (
+import Tables from "./Table";
+import { ReportRoute } from "routers/report/route";
+import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
+const Report = (): JSX.Element => (
   <>
     <Breadcrumb
       items={[
-        { label: "Cấp số" , to: '' },
-        { label: "Danh sách cấp số", to: LevelNoRoute.LEVEL_NO },
+        { label: "Báo cáo" , to: '' },
+        { label: "Lập báo cáo", to: ReportRoute.REPORT },
       ]}
     />
     <Box mt={1} >
@@ -30,9 +31,9 @@ const LevelNo = (): JSX.Element => (
               sx={{ ml: 6, flexDirection: "column" }}
               variant="contained"
               size="medium"
-              startIcon={<AddIcon />}
+              startIcon={<SimCardDownloadIcon />}
             >
-              Cấp số mới
+              Tải về
             </Button>
           </Link>
         </Grid>
@@ -40,4 +41,4 @@ const LevelNo = (): JSX.Element => (
     </Box>
   </>
 );
-export default LevelNo;
+export default Report;

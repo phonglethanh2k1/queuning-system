@@ -1,34 +1,33 @@
-import Detail from 'components/device/Detail';
+import Detail from 'components/levelNo/Detail';
 import { collection, doc, getDoc } from 'firebase/firestore';
 import { firebaseDatabase } from 'firebaseApp/config';
 import React, { memo, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Device } from 'types/device';
+import { LevelNo } from 'types/levelNo';
 
-const DetailDevicePage = memo((): JSX.Element => {
+const LeveNoPage = memo((): JSX.Element => {
   const { id } = useParams<{ id: string }>();
-  const [device, setDevice] = useState<Device | null>(null);
-
+  const [levelNo, setLevelNo] = useState<LevelNo | null>(null);
+  console.log(levelNo)
   useEffect(() => {
-    const fetchDevice = async () => {
-      const deviceDoc = doc(collection(firebaseDatabase, 'device'), id);
-      const deviceData = await getDoc(deviceDoc);
-      if (deviceData.exists()) {
-        const device = { id: deviceData.id, ...deviceData.data() } as unknown as Device;
-        setDevice(device);
+    const fetchLevelNo = async () => {
+      const levelNoDoc = doc(collection(firebaseDatabase, 'levelNo'), id);
+      const levelNoData = await getDoc(levelNoDoc);
+      if (levelNoData.exists()) {
+        const levelNo = { id: levelNoData.id, ...levelNoData.data() } as unknown as LevelNo;
+        setLevelNo(levelNo);
       } else {
         console.log('No such device');
       }
     };
-    fetchDevice();
+    fetchLevelNo();
   }, [id]);
-  if (!device) {
+  if (!levelNo) {
     return <div>Loading...</div>;
   }
-
   // get detail ddos ra owr usserEffeft
   // truyền props vào  detail page để view
 
-  return <Detail device={device} />;
+  return <Detail levelNo={levelNo} />;
 });
-export default DetailDevicePage;
+export default LeveNoPage;
