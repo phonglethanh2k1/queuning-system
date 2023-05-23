@@ -45,6 +45,9 @@ const SignInForm: FC<{ data: ResponseProps }> = ({ data }) => {
         }
 
         if (response.code === 200) {
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('username', values.username);
+          localStorage.setItem('password', values.password);
           handleNextStep();
         }
       })

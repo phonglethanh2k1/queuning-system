@@ -247,8 +247,8 @@ export default function componentStyleOverrides(theme: IThemeOption): Components
           zIndex: 2,
           marginTop: '-45px',
           position: 'fixed',
-        }
-      }
-    }
+        },
+      },
+    },
   };
 }

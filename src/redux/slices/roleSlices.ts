@@ -9,22 +9,17 @@ import {
   getDocs,
   limit,
   query,
-  startAfter,
-  where,
 } from 'firebase/firestore';
 import { firebaseDatabase } from 'firebaseApp/config';
-import { nameService, powerSupply, status } from 'types/report';
 interface UpdateDataPayload {
   id: string;
   values: any;
 }
 export interface Data {
   id: string;
-  stt: string;
-  serviceName: string;
-  timeLevel: string;
-  status: number;
-  powerSupply: string;
+  roleName: string;
+  numberOfUsers: string;
+  descrip: string;
 }
 
 interface DataState {
@@ -41,7 +36,7 @@ const initialState: DataState = {
   error: null,
 };
 
-const reportSlices = createSlice({
+const roleSlices = createSlice({
   name: 'data',
   initialState,
   reducers: {
@@ -69,51 +64,27 @@ const reportSlices = createSlice({
   },
 });
 
-export const { dataRequested, dataReceived, dataRequestFailed, updateService, setCount } = reportSlices.actions;
+export const { dataRequested, dataReceived, dataRequestFailed, updateService, setCount } = roleSlices.actions;
 
-export default reportSlices.reducer;
+export default roleSlices.reducer;
 
-export const fetchData =
-  (
-    selectedServiceName: nameService,
-    selectedStatus: status,
-    selectedPowerSupply: powerSupply,
-    page: number
-  ): AppThunk =>
-  async (dispatch: any) => {
-    dispatch(dataRequested());
-    try {
-      const equipment = collection(firebaseDatabase, 'report');
-      const itemsPerPage = 10;
-      let queryString = query(equipment, limit(10));
-      if (selectedServiceName !== nameService.ALL) {
-        queryString = query(equipment, where('serviceName', '==', selectedServiceName), limit(10));
-      }
-      if (selectedStatus !== status.ALL) {
-        queryString = query(equipment, where('status', '==', selectedStatus), limit(10));
-      }
+export const fetchData = (): AppThunk => async (dispatch: any) => {
+  dispatch(dataRequested());
+  try {
+    const equipment = collection(firebaseDatabase, 'roleSetting');
+    const itemsPerPage = 10;
+    let queryString = query(equipment, limit(10));
+    const snapshot = await getDocs(queryString);
+    const result = snapshot.docs.map((docSnap: QueryDocumentSnapshot<any>) => ({
+      ...docSnap.data(),
+      id: docSnap.id,
+    }));
 
-      if (selectedPowerSupply !== powerSupply.ALL) {
-        queryString = query(equipment, where('powerSupply', '==', selectedPowerSupply), limit(10));
-      }
-
-      if (page > 1) {
-        const snapshot = await getDocs(queryString);
-        const lastVisibleDocument = snapshot.docs[snapshot.docs.length - 1];
-        queryString = query(equipment, startAfter(lastVisibleDocument), limit(itemsPerPage));
-      }
-      const snapshot = await getDocs(queryString);
-
-      const result = snapshot.docs.map((docSnap: QueryDocumentSnapshot<any>) => ({
-        ...docSnap.data(),
-        id: docSnap.id,
-      }));
-
-      dispatch(dataReceived(result));
-    } catch (error) {
-      dispatch(dataRequestFailed(error.message));
-    }
-  };
+    dispatch(dataReceived(result));
+  } catch (error) {
+    dispatch(dataRequestFailed(error.message));
+  }
+};
 
 // const handleCreate = async (data: any) => {
 //   const equipment = collection(firebaseDatabase, "service");

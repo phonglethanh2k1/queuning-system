@@ -15,11 +15,12 @@ import { DeviceRoute } from 'routers/device/route';
 import { ServiceRoute } from 'routers/service/route';
 import { LevelNoRoute } from 'routers/levelNo/route';
 import { ReportRoute } from 'routers/report/route';
+import { useState } from 'react';
 
 const Menu = () => {
   const navigate = useNavigate();
+  const [openMenu, setOpenMenu] = useState<number | null>(null);
   const { pathname } = useLocation();
-
   const MenuMain = [
     {
       label: 'Dashboard',
@@ -52,16 +53,29 @@ const Menu = () => {
       link: SettingRoute.SETTING,
       Item: [
         {
-          label: 'Gói dịch vụ',
-          icon: '',
-          link: '',
+          label: 'Quản lý vai trò',
+          link: SettingRoute.ROLE,
+        },
+        {
+          label: 'Quản lý tài khoản',
+          link: SettingRoute.ACCOUNT,
+        },
+        {
+          label: 'Nhật ký người dùng',
+          link: SettingRoute.USER,
         },
       ],
     },
   ];
-
-  const handleNavigate = (link: string) => {
-    navigate(link);
+  const handleNavigate = (link: string, index: number) => {
+    if (MenuMain[index].Item && MenuMain[index].Item?.length) {
+      handleMenuClick(index);
+    } else {
+      navigate(link);
+    }
+  };
+  const handleMenuClick = (index: number) => {
+    setOpenMenu((prevIndex) => (prevIndex === index ? null : index));
   };
   return (
     <div>
@@ -82,10 +96,10 @@ const Menu = () => {
         </Box>
       </Toolbar>
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'common.white' }} component="nav">
-        {MenuMain.map((item) => (
+        {MenuMain.map((item, index) => (
           <Box key={item.link}>
             <ListItemButton
-              onClick={() => handleNavigate(item.link)}
+              onClick={() => handleNavigate(item.link, index)}
               sx={{
                 bgcolor: pathname === item.link ? 'primary.main' : 'background.default',
               }}
@@ -100,13 +114,34 @@ const Menu = () => {
                 primary={item.label}
               />
             </ListItemButton>
-            <Collapse in timeout="auto" unmountOnExit style={{ marginLeft: '46px' }}>
+            <Collapse in timeout="auto" unmountOnExit style={{ marginLeft: '25px' }}>
               <List component="div" disablePadding>
-                {item.Item?.map((menuChild) => (
-                  <ListItemButton sx={{ pl: 4, borderRadius: '10px' }} key={menuChild.link}>
-                    <ListItemText primary={menuChild.label} />
-                  </ListItemButton>
-                ))}
+                {item.Item && item.Item.length && (
+                  <Collapse in={openMenu === index} timeout="auto" unmountOnExit style={{ marginLeft: '46px' }}>
+                    <List component="div" disablePadding>
+                      {item.Item.map((menuChild, childIndex) => (
+                        <ListItemButton
+                          sx={{
+                            pl: 4,
+                            borderRadius: '10px',
+                            bgcolor: pathname === menuChild.link ? 'primary.main' : 'background.default',
+                          }}
+                          key={childIndex}
+                          onClick={() => handleNavigate(menuChild.link, childIndex)}
+                        >
+                          <ListItemText
+                            primary={menuChild.label}
+                            sx={{
+                              '.MuiListItemText-primary': {
+                                color: pathname === menuChild.link ? colors.primaryContractText : colors.grey700,
+                              },
+                            }}
+                          />
+                        </ListItemButton>
+                      ))}
+                    </List>
+                  </Collapse>
+                )}
               </List>
             </Collapse>
           </Box>

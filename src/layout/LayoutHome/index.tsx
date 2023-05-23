@@ -12,6 +12,7 @@ import { Icon } from 'components/icons';
 import { Button, Link } from '@mui/material';
 import CardRight from 'layout/LayoutHome/CardRight';
 import Menu from '../MainLayout/Menu';
+import Calendar from './Calendar';
 
 const drawerWidth = 250;
 
@@ -63,6 +64,9 @@ export default function LayoutHome() {
             Tổng quan
           </Typography>
           <CardRight />
+          <Box mt={2} borderRadius="12px" boxShadow="2px 2px 15px rgba(70, 64, 67, 0.1)">
+            <Calendar />
+          </Box>
         </Box>
       </AppBar>
       <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">

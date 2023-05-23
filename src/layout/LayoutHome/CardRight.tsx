@@ -164,57 +164,59 @@ const CardList = [
   },
 ];
 const CardRight = (): JSX.Element => (
-  <Grid container spacing={2}>
-    {CardList.map((item) => (
-      <Grid item xs={12}>
-        <Grid
-          container
-          sx={{
-            minWidth: 186,
-            borderRadius: '12px',
-            boxShadow: '2px 2px 15px rgba(70, 64, 67, 0.1);',
-            alignItems: 'center',
-            px: '10px',
-          }}
-        >
-          <Grid item xs={3}>
-            {item.chart}
-          </Grid>
-          <Grid item xs={3}>
-            <Typography variant="h2">{item.text}</Typography>
-            <Box display="flex">
-              {item.icons}
-              {item.textIcon}
-            </Box>
-          </Grid>
-          <Grid item xs={4}>
-            <Box display="flex" alignItems="center" ml="12px">
-              {item.iconSttOn || item.iconWaiting}
-              <Typography variant="subtitle2" lineHeight="2.57" ml={1}>
-                {item.statusOn || item.statusWaiting}
-              </Typography>
-            </Box>
-            <Box display="flex" alignItems="center" ml="12px">
-              {item.iconSttOff || item.iconUsed}
-              <Typography variant="subtitle2" lineHeight="2.57" ml={1}>
-                {item.statusOff || item.used}
-              </Typography>
-            </Box>
-            <Box display="flex" alignItems="center" ml="12px">
-              {item.iconSkip}
-              <Typography variant="subtitle2" lineHeight="2.57" ml={1}>
-                {item.statusEkip}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={1} ml={3}>
-            {item.numberOn || item.numberWaiting}
-            {item.numberOf || item.numberUsed}
-            {item.numberEkip}
+  <>
+    <Grid container spacing={2}>
+      {CardList.map((item) => (
+        <Grid item xs={12}>
+          <Grid
+            container
+            sx={{
+              minWidth: 186,
+              borderRadius: '12px',
+              boxShadow: '2px 2px 15px rgba(70, 64, 67, 0.1);',
+              alignItems: 'center',
+              px: '10px',
+            }}
+          >
+            <Grid item xs={3}>
+              {item.chart}
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant="h2">{item.text}</Typography>
+              <Box display="flex">
+                {item.icons}
+                {item.textIcon}
+              </Box>
+            </Grid>
+            <Grid item xs={4}>
+              <Box display="flex" alignItems="center" ml="12px">
+                {item.iconSttOn || item.iconWaiting}
+                <Typography variant="subtitle2" lineHeight="2.57" ml={1}>
+                  {item.statusOn || item.statusWaiting}
+                </Typography>
+              </Box>
+              <Box display="flex" alignItems="center" ml="12px">
+                {item.iconSttOff || item.iconUsed}
+                <Typography variant="subtitle2" lineHeight="2.57" ml={1}>
+                  {item.statusOff || item.used}
+                </Typography>
+              </Box>
+              <Box display="flex" alignItems="center" ml="12px">
+                {item.iconSkip}
+                <Typography variant="subtitle2" lineHeight="2.57" ml={1}>
+                  {item.statusEkip}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={1} ml={3}>
+              {item.numberOn || item.numberWaiting}
+              {item.numberOf || item.numberUsed}
+              {item.numberEkip}
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    ))}
-  </Grid>
+      ))}
+    </Grid>
+  </>
 );
 export default CardRight;

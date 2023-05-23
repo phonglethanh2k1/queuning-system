@@ -17,21 +17,21 @@ const useConfig = (): { data: ResponseProps } => ({
         inputList: [
           {
             id: '1',
-            fieldName: 'email',
-            input: InputType.EMAIL,
-            label: 'Email',
-            placeHolder: 'Email',
+            fieldName: 'username',
+            input: InputType.TEXT,
+            label: 'Tên đăng nhập',
+            placeHolder: 'Tên đăng nhập',
             rulesList: [
               {
                 rule: '^(?!\\s*$).+',
-                label: 'Vui lòng nhập Email',
+                label: 'Vui lòng nhập Tên đăng nhập',
               },
-              {
-                rule: '[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}',
-                label: 'Định dạng email không đúng, ví dụ abc@gmail.com',
-              },
+              // {
+              //   rule: '[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}',
+              //   label: 'Định dạng email không đúng, ví dụ abc@gmail.com',
+              // },
             ],
-            value: 'admin@gmail.com',
+            // value: 'lethanhphong1702',
           },
           {
             id: '2',
@@ -39,7 +39,7 @@ const useConfig = (): { data: ResponseProps } => ({
             input: InputType.EMAIL,
             label: 'Mật khẩu',
             placeHolder: 'Mật khẩu',
-            value: '123456',
+            // value: '123456',
             rulesList: [
               {
                 rule: '^(?!\\s*$).+',

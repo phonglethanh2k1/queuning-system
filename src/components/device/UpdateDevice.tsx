@@ -1,42 +1,25 @@
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  InputAdornment,
-  MenuItem,
-  Stack,
-  Typography,
-} from "@mui/material";
-import React, { useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import * as yup from "yup";
-import useYupValidationResolver from "helpers/useYupValidationResolver";
-import TextField from "components/form/controller/TextField";
-import { Data, updateDeviceAsync } from "redux/slices/dataSlice";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
-import { DeviceRoute } from "routers/device/route";
-import CloseIcon from "@mui/icons-material/Close";
-import Breadcrumb from "components/breadcrumb/Breadcrumb";
+import { Box, Button, Grid, IconButton, InputAdornment, MenuItem, Stack, Typography } from '@mui/material';
+import React, { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import useYupValidationResolver from 'helpers/useYupValidationResolver';
+import TextField from 'components/form/controller/TextField';
+import { Data, updateDeviceAsync } from 'redux/slices/dataSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { DeviceRoute } from 'routers/device/route';
+import CloseIcon from '@mui/icons-material/Close';
+import Breadcrumb from 'components/breadcrumb/Breadcrumb';
 
 const validation = yup.object({});
 
 type Props = {
   device: any;
 };
-const styles = {
-  button: {
-    flex: 1,
-    margin: "0 4px",
-  },
-  input: {
-    width: "100%",
-  },
-};
+
 const UpdateDevice = (props: Props): JSX.Element => {
   const { device } = props;
-  const options = ["kiosk", "Display counter"];
+  const options = ['kiosk', 'Display counter'];
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const resolver = useYupValidationResolver(validation);
@@ -49,7 +32,7 @@ const UpdateDevice = (props: Props): JSX.Element => {
       deviceName: device.deviceName,
       userName: device.userName,
       addressIP: device.addressIP,
-      serviceUsed: "",
+      serviceUsed: device.serviceUsed,
       password: device.password,
     },
   });
@@ -60,23 +43,23 @@ const UpdateDevice = (props: Props): JSX.Element => {
   };
   const handleCancel = () => {
     methods.reset({
-      id: "",
-      deviceCode: "",
-      typeofDevice: "",
-      deviceName: "",
-      userName: "",
-      addressIP: "",
-      serviceUsed: "",
-      password: "",
+      id: '',
+      deviceCode: '',
+      typeofDevice: '',
+      deviceName: '',
+      userName: '',
+      addressIP: '',
+      serviceUsed: '',
+      password: '',
     });
   };
   return (
     <>
       <Breadcrumb
         items={[
-          { label: "Thiết bị", to: '' },
-          { label: "Danh sách thiết bị", to: DeviceRoute.DEVICE },
-          { label: "Cập nhật thiết bị", to: `${DeviceRoute.UPDATE_DEVICE.replace(":id", device.id)}` },
+          { label: 'Thiết bị', to: '' },
+          { label: 'Danh sách thiết bị', to: DeviceRoute.DEVICE },
+          { label: 'Cập nhật thiết bị', to: `${DeviceRoute.UPDATE_DEVICE.replace(':id', device.id)}` },
         ]}
       />
       <Box mt={1}>
@@ -85,59 +68,46 @@ const UpdateDevice = (props: Props): JSX.Element => {
         </Typography>
         <Box
           sx={{
-            backgroundColor: "common.white",
-            width: "90%",
+            backgroundColor: 'common.white',
+            width: '90%',
             px: 3,
             py: 4,
-            borderRadius: "16px",
+            borderRadius: '16px',
           }}
         >
           <FormProvider {...methods}>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={methods.handleSubmit(handleSubmit)}
-            >
+            <Box component="form" noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
               <Grid container mb={3} spacing={3}>
                 <Grid item xs={6}>
                   <Typography
                     variant="h6"
                     sx={{
-                      position: "relative",
-                      ":after": {
-                        position: "absolute",
+                      position: 'relative',
+                      ':after': {
+                        position: 'absolute',
                         content: '"*"',
-                        color: "error.dark",
-                        left: "95px",
+                        color: 'error.dark',
+                        left: '95px',
                       },
                     }}
                   />
-                  <TextField
-                    name="deviceCode"
-                    label="Mã thiết bị:"
-                    placeholder="Nhập mã thiết bị"
-                  />
+                  <TextField name="deviceCode" label="Mã thiết bị:" placeholder="Nhập mã thiết bị" />
                 </Grid>
                 <Grid item xs={6}>
                   <Typography
                     variant="h6"
                     sx={{
-                      position: "relative",
-                      ":after": {
-                        position: "absolute",
+                      position: 'relative',
+                      ':after': {
+                        position: 'absolute',
                         content: '"*"',
-                        color: "error.dark",
-                        left: "105px",
+                        color: 'error.dark',
+                        left: '105px',
                       },
                     }}
                   />
 
-                  <TextField
-                    name="typeofDevice"
-                    label="Loại thiết bị:"
-                    placeholder="Chọn loại thiết bị"
-                    select
-                  >
+                  <TextField name="typeofDevice" label="Loại thiết bị:" placeholder="Chọn loại thiết bị" select>
                     {options.map((option) => (
                       <MenuItem key={option} value={option}>
                         {option}
@@ -151,39 +121,31 @@ const UpdateDevice = (props: Props): JSX.Element => {
                   <Typography
                     variant="h6"
                     sx={{
-                      position: "relative",
-                      ":after": {
-                        position: "absolute",
+                      position: 'relative',
+                      ':after': {
+                        position: 'absolute',
                         content: '"*"',
-                        color: "error.dark",
-                        left: "100px",
+                        color: 'error.dark',
+                        left: '100px',
                       },
                     }}
                   />
-                  <TextField
-                    name="deviceName"
-                    label="Tên thiết bị:"
-                    placeholder="Nhập tên thiết bị"
-                  />
+                  <TextField name="deviceName" label="Tên thiết bị:" placeholder="Nhập tên thiết bị" />
                 </Grid>
                 <Grid item xs={6}>
                   <Typography
                     variant="h6"
                     sx={{
-                      position: "relative",
-                      ":after": {
-                        position: "absolute",
+                      position: 'relative',
+                      ':after': {
+                        position: 'absolute',
                         content: '"*"',
-                        color: "error.dark",
-                        left: "130px",
+                        color: 'error.dark',
+                        left: '130px',
                       },
                     }}
                   />
-                  <TextField
-                    name="userName"
-                    label="Tên đăng nhập:"
-                    placeholder="Nhập tài khoản"
-                  />
+                  <TextField name="userName" label="Tên đăng nhập:" placeholder="Nhập tài khoản" />
                 </Grid>
               </Grid>
               <Grid container mb={3} spacing={3}>
@@ -191,70 +153,35 @@ const UpdateDevice = (props: Props): JSX.Element => {
                   <Typography
                     variant="h6"
                     sx={{
-                      position: "relative",
-                      ":after": {
-                        position: "absolute",
+                      position: 'relative',
+                      ':after': {
+                        position: 'absolute',
                         content: '"*"',
-                        color: "error.dark",
-                        left: "90px",
+                        color: 'error.dark',
+                        left: '90px',
                       },
                     }}
                   />
-                  <TextField
-                    name="addressIP"
-                    label="Địa chỉ IP:"
-                    placeholder="Nhập địa chỉ IP"
-                  />
+                  <TextField name="addressIP" label="Địa chỉ IP:" placeholder="Nhập địa chỉ IP" />
                 </Grid>
                 <Grid item xs={6}>
                   <Typography
                     variant="h6"
                     sx={{
-                      position: "relative",
-                      ":after": {
-                        position: "absolute",
+                      position: 'relative',
+                      ':after': {
+                        position: 'absolute',
                         content: '"*"',
-                        color: "error.dark",
-                        left: "90px",
+                        color: 'error.dark',
+                        left: '90px',
                       },
                     }}
                   />
-                  <TextField
-                    name="password"
-                    label="Mật khẩu:"
-                    placeholder="Nhập mật khẩu"
-                  />
+                  <TextField name="password" label="Mật khẩu:" placeholder="Nhập mật khẩu" />
                 </Grid>
               </Grid>
               <Grid item xs={12} mb={3}>
-                <TextField
-                  name="serviceUsed"
-                  label="Dịch vụ sử dụng:"
-                  InputProps={{
-                    startAdornment: (
-                      <Grid container spacing={1}>
-                        <Grid item xs={2}>
-                          <IconButton>Button 1</IconButton>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <IconButton>Button 2</IconButton>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <IconButton>Button 3</IconButton>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <IconButton>Button 4</IconButton>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <IconButton>Button 5</IconButton>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <IconButton>Button 6</IconButton>
-                        </Grid>
-                      </Grid>
-                    ),
-                  }}
-                />
+                <TextField name="serviceUsed" label="Dịch vụ sử dụng:" />
               </Grid>
 
               <Typography
@@ -263,12 +190,12 @@ const UpdateDevice = (props: Props): JSX.Element => {
                 padding="10px"
                 fontWeight="300"
                 sx={{
-                  position: "relative",
-                  ":before": {
-                    position: "absolute",
+                  position: 'relative',
+                  ':before': {
+                    position: 'absolute',
                     content: '"*"',
-                    color: "error.dark",
-                    left: "0",
+                    color: 'error.dark',
+                    left: '0',
                   },
                 }}
               >
@@ -283,8 +210,8 @@ const UpdateDevice = (props: Props): JSX.Element => {
                   variant="contained"
                   size="large"
                   sx={{
-                    backgroundColor: "primary.main",
-                    color: "white",
+                    backgroundColor: 'primary.main',
+                    color: 'white',
                     ml: 4,
                   }}
                   type="submit"

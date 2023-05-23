@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import Setting from 'components/setting';
 
-const SettingPage = memo((): JSX.Element => <Setting />);
+const SettingPage = memo((): JSX.Element => <div>Page</div>);
 export default SettingPage;
