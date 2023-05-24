@@ -86,40 +86,23 @@ export const fetchData = (): AppThunk => async (dispatch: any) => {
   }
 };
 
-// const handleCreate = async (data: any) => {
-//   const equipment = collection(firebaseDatabase, "service");
+const handleCreate = async (data: any) => {
+  const equipment = collection(firebaseDatabase, 'roleSetting');
 
-//   const snapshot = await addDoc(equipment, data);
-// };
+  const snapshot = await addDoc(equipment, data);
+};
 
-// export const addServiceAsync = createAsyncThunk(
-//   "data/addService",
-//   async (data: any) => {
-//     const {
-//       serviceCode,
-//       serviceName,
-//       descrip,
-//       increaseVerb,
-//       to,
-//       prefix,
-//       surfix,
-//       operationStt,
-//       checkbox,
-//     } = data;
-//     const service = {
-//       serviceCode,
-//       serviceName,
-//       descrip,
-//       increaseVerb,
-//       to,
-//       prefix,
-//       surfix,
-//       operationStt,
-//       checkbox,
-//     };
-//     handleCreate(service);
-//   }
-// );
+export const addRoleAsync = createAsyncThunk('data/addRole', async (data: any) => {
+  const { roleName, descrip, checkboxA, checkboxB, numberOfUsers } = data;
+  const role = {
+    roleName,
+    descrip,
+    numberOfUsers,
+    checkboxA,
+    checkboxB,
+  };
+  handleCreate(role);
+});
 
 // export const updateServiceAsync = createAsyncThunk(
 //   "data/updateService",

@@ -4,6 +4,7 @@ import serviceReducer from 'redux/slices/serviceSlice';
 import levelNoReducer from 'redux/slices/levelNoSlices';
 import reportReducer from 'redux/slices/reportSlices';
 import roleReducer from 'redux/slices/roleSlices';
+import accountReducer from 'redux/slices/accountSlices';
 export const store = configureStore({
   reducer: {
     data: dataReducer,
@@ -11,6 +12,7 @@ export const store = configureStore({
     levelNo: levelNoReducer,
     report: reportReducer,
     role: roleReducer,
+    account: accountReducer,
   },
 });
 

@@ -3,41 +3,55 @@ import Breadcrumb from 'components/breadcrumb/Breadcrumb';
 import CheckboxGroupField from 'components/form/controller/CheckboxGroupField';
 import TextField from 'components/form/controller/TextField';
 import useYupValidationResolver from 'helpers/useYupValidationResolver';
-import React from 'react';
+import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { SettingRoute } from 'routers/setting/route';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
+import { addRoleAsync } from 'redux/slices/roleSlices';
+import Setting from '..';
+import { useNavigate } from 'react-router-dom';
+type AddRole = {
+  roleName: string;
+  descrip: string;
+  numberOfUsers: string;
+  checkboxA: number[];
+  checkboxB: number[];
+};
 const validation = yup.object({});
 const AddRole = (): JSX.Element => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const resolver = useYupValidationResolver(validation);
-  const methods = useForm<any>({
+  const methods = useForm<AddRole>({
     resolver,
     defaultValues: {
-      serviceCode: '',
+      roleName: '',
       descrip: '',
-      serviceName: '',
-      increaseVerb: '',
-      to: '',
-      prefix: '',
-      surfix: '',
-      operationStt: 1,
-      checkbox: [],
+      numberOfUsers: '6',
+      checkboxA: [1],
+      checkboxB: [1],
     },
   });
-  const handleSubmit = async (values?: any) => {
-    // dispatch<any>(addServiceAsync(values));
-    // navigate(ServiceRoute.SERVICE);
+  const handleSubmit = async (values?: AddRole) => {
+    console.log(values);
+    dispatch<any>(addRoleAsync(values));
+    navigate(SettingRoute.ROLE);
   };
+  // const handleCheckboxChange = (newValue: any) => {
+  //   if (newValue.includes(1)) {
+  //     setCheckboxValues([1, 2, 3, 4]); // Nếu checkbox "Tất cả" được chọn, đánh dấu tất cả các checkbox khác
+  //   } else {
+  //     setCheckboxValues(newValue); // Ngược lại, lưu trạng thái của checkbox như bình thường
+  //   }
+  // };
   const handleCancel = () => {
     methods.reset({
-      serviceCode: '',
+      roleName: '',
       descrip: '',
-      serviceName: '',
-      increaseVerb: '',
-      to: '',
-      prefix: '',
-      surfix: '',
-      checkbox: [1],
+      numberOfUsers: '',
+      checkboxA: [],
+      checkboxB: [],
     });
   };
   return (
@@ -71,7 +85,7 @@ const AddRole = (): JSX.Element => {
                 <FormProvider {...methods}>
                   <Box component="form" noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
                     <Grid container mb={3} spacing={3}>
-                      <Grid item xs={6} gap={3}>
+                      <Grid item xs={6}>
                         <Typography
                           variant="h6"
                           sx={{
@@ -84,7 +98,7 @@ const AddRole = (): JSX.Element => {
                             },
                           }}
                         />
-                        <TextField name="serviceCode" label="Tên vai trò:" placeholder="Nhập tên vai trò" />
+                        <TextField name="roleName" label="Tên vai trò:" placeholder="Nhập tên vai trò" />
 
                         <Typography
                           variant="h6"
@@ -106,10 +120,10 @@ const AddRole = (): JSX.Element => {
                           }}
                           name="descrip"
                           label="Mô tả:"
-                          placeholder="Mô tả thiết bị"
+                          placeholder="Nhập mô tả"
                         />
                       </Grid>
-                      <Grid item xs={6} gap={3}>
+                      <Grid item xs={6}>
                         <Typography
                           variant="h6"
                           sx={{
@@ -122,57 +136,60 @@ const AddRole = (): JSX.Element => {
                             },
                           }}
                         />
-                        <Box>
-                          <CheckboxGroupField
-                            name="checkbox"
-                            label="Phân quyền chức năng"
-                            options={[
-                              {
-                                value: 1,
-                                label: 'Tất cả',
-                              },
-                              {
-                                value: 2,
-                                label: 'Chức năng x',
-                              },
-                              {
-                                value: 3,
-                                label: 'Chức năng y',
-                              },
-                              {
-                                value: 4,
-                                label: 'Chức năng z',
-                              },
-                            ]}
-                            getItemLabel={(item) => item.label}
-                            getItemValue={(item) => item.value}
-                          />
-                        </Box>
-                        <Box>
-                          <Typography variant="h3"> Nhóm chức năng B</Typography>
-                          <CheckboxGroupField
-                            name="checkbox"
-                            options={[
-                              {
-                                value: 1,
-                                label: 'Tất cả',
-                              },
-                              {
-                                value: 2,
-                                label: 'Chức năng x',
-                              },
-                              {
-                                value: 3,
-                                label: 'Chức năng y',
-                              },
-                              {
-                                value: 4,
-                                label: 'Chức năng z',
-                              },
-                            ]}
-                            getItemLabel={(item) => item.label}
-                            getItemValue={(item) => item.value}
-                          />
+                        <Typography mb={1.2}>Phân quyền chức năng:</Typography>
+                        <Box sx={{ backgroundColor: 'error.light', borderRadius: 1, px: 3, py: 2 }}>
+                          <Typography variant="h3"> Nhóm chức năng A</Typography>
+                          <Box>
+                            <CheckboxGroupField
+                              name="checkboxA"
+                              options={[
+                                {
+                                  value: 1,
+                                  label: 'Tất cả',
+                                },
+                                {
+                                  value: 2,
+                                  label: 'Chức năng x',
+                                },
+                                {
+                                  value: 3,
+                                  label: 'Chức năng y',
+                                },
+                                {
+                                  value: 4,
+                                  label: 'Chức năng z',
+                                },
+                              ]}
+                              getItemLabel={(item) => item.label}
+                              getItemValue={(item) => item.value}
+                            />
+                          </Box>
+                          <Box>
+                            <Typography variant="h3"> Nhóm chức năng B</Typography>
+                            <CheckboxGroupField
+                              name="checkboxB"
+                              options={[
+                                {
+                                  value: 1,
+                                  label: 'Tất cả',
+                                },
+                                {
+                                  value: 2,
+                                  label: 'Chức năng x',
+                                },
+                                {
+                                  value: 3,
+                                  label: 'Chức năng y',
+                                },
+                                {
+                                  value: 4,
+                                  label: 'Chức năng z',
+                                },
+                              ]}
+                              getItemLabel={(item) => item.label}
+                              getItemValue={(item) => item.value}
+                            />
+                          </Box>
                         </Box>
                       </Grid>
                     </Grid>

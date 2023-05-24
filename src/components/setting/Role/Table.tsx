@@ -11,11 +11,12 @@ import { Data, fetchData } from 'redux/slices/roleSlices';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { ServiceRoute } from 'routers/service/route';
+import { SettingRoute } from 'routers/setting/route';
 const Tables = (): JSX.Element => {
   const dispatch = useDispatch();
   const data = useSelector((state: RootState) => state.role.data);
   const renderUpdate = (detail: Data) => (
-    <RouterLink to={`${ServiceRoute.UPDATE_SERVICE.replace(':id', detail.id)}`} style={{ color: '#4277FF' }}>
+    <RouterLink to={`${SettingRoute.UPDATE_ROLE.replace(':id', detail.id)}`} style={{ color: '#4277FF' }}>
       Cập nhật
     </RouterLink>
   );
