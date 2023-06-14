@@ -1,23 +1,23 @@
-import { Box, Button, Grid, MenuItem, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import * as yup from "yup";
-import useYupValidationResolver from "helpers/useYupValidationResolver";
-import TextField from "components/form/controller/TextField";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Breadcrumb from "components/breadcrumb/Breadcrumb";
-import CheckboxGroupField from "components/form/controller/CheckboxGroupField";
-import { Data, addServiceAsync, updateServiceAsync } from "redux/slices/serviceSlice";
-import { ServiceRoute } from "routers/service/route";
+import { Box, Button, Grid, MenuItem, Stack, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import useYupValidationResolver from 'helpers/useYupValidationResolver';
+import TextField from 'components/form/controller/TextField';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Breadcrumb from 'components/breadcrumb/Breadcrumb';
+import CheckboxGroupField from 'components/form/controller/CheckboxGroupField';
+import { Data, updateServiceAsync } from 'redux/slices/serviceSlice';
+import { ServiceRoute } from 'routers/service/route';
 
 const validation = yup.object({});
 
 type Props = {
-  service : any
-}
+  service: any;
+};
 const UpdateService = (props: Props): JSX.Element => {
-  const {service} = props
+  const { service } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const resolver = useYupValidationResolver(validation);
@@ -32,11 +32,11 @@ const UpdateService = (props: Props): JSX.Element => {
       to: service.to,
       prefix: service.prefix,
       surfix: service.surfix,
-      checkbox: [service.checkbox]
+      // checkbox: [service.checkbox],
     },
   });
-  const {id} = service
-  const handleSubmit = async (values?: Data ) => {
+  const { id } = service;
+  const handleSubmit = async (values?: Data) => {
     console.log(values);
     dispatch<any>(updateServiceAsync({ id, values }));
     navigate(ServiceRoute.SERVICE);
@@ -44,24 +44,24 @@ const UpdateService = (props: Props): JSX.Element => {
   const handleCancel = () => {
     methods.reset({
       id: '',
-      serviceCode: "",
-      descrip: "",
-      serviceName: "",
-      increaseVerb: "",
-      to: "",
-      prefix: "",
-      surfix: "",
-      checkbox: []
+      serviceCode: '',
+      descrip: '',
+      serviceName: '',
+      increaseVerb: '',
+      to: '',
+      prefix: '',
+      surfix: '',
+      // checkbox: [],
     });
   };
   return (
     <>
       <Breadcrumb
         items={[
-          { label: "Dịch vụ", to: '' },
-          { label: "Danh sách dịch vụ", to: ServiceRoute.SERVICE },
-          { label: "Chi tiết", to: `${ServiceRoute.SERVICE}/${service.id}`},
-          { label: "Cập nhật", to: `${ServiceRoute.UPDATE_SERVICE.replace(":id", service.id)}` },
+          { label: 'Dịch vụ', to: '' },
+          { label: 'Danh sách dịch vụ', to: ServiceRoute.SERVICE },
+          { label: 'Chi tiết', to: `${ServiceRoute.SERVICE}/${service.id}` },
+          { label: 'Cập nhật', to: `${ServiceRoute.UPDATE_SERVICE.replace(':id', service.id)}` },
         ]}
       />
       <Box mt={1}>
@@ -70,22 +70,18 @@ const UpdateService = (props: Props): JSX.Element => {
         </Typography>
         <Box
           sx={{
-            backgroundColor: "common.white",
-            width: "90%",
+            backgroundColor: 'common.white',
+            width: '90%',
             px: 3,
             py: 4,
-            borderRadius: "16px",
+            borderRadius: '16px',
           }}
         >
           <Typography variant="h3" mb={2}>
             Thông tin dịch vụ
           </Typography>
           <FormProvider {...methods}>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={methods.handleSubmit(handleSubmit)}
-            >
+            <Box component="form" noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
               <Grid container mb={3} spacing={3}>
                 <Grid item xs={12} display="flex" gap={3}>
                   <Grid container flexDirection="row">
@@ -93,57 +89,49 @@ const UpdateService = (props: Props): JSX.Element => {
                       <Typography
                         variant="h6"
                         sx={{
-                          position: "relative",
-                          ":after": {
-                            position: "absolute",
+                          position: 'relative',
+                          ':after': {
+                            position: 'absolute',
                             content: '"*"',
-                            color: "error.dark",
-                            left: "95px",
+                            color: 'error.dark',
+                            left: '95px',
                           },
                         }}
                       />
-                      <TextField
-                        name="serviceCode"
-                        label="Mã dịch vụ:"
-                        placeholder="Nhập mã dịch vụ"
-                      />
+                      <TextField name="serviceCode" label="Mã dịch vụ:" placeholder="Nhập mã dịch vụ" />
                     </Grid>
                     <Grid item xs={12}>
                       <Typography
                         variant="h6"
                         sx={{
-                          position: "relative",
-                          ":after": {
-                            position: "absolute",
+                          position: 'relative',
+                          ':after': {
+                            position: 'absolute',
                             content: '"*"',
-                            color: "error.dark",
-                            left: "100px",
+                            color: 'error.dark',
+                            left: '100px',
                           },
                         }}
                       />
-                      <TextField
-                        name="serviceName"
-                        label="Tên dịch vụ:"
-                        placeholder="Nhập tên dịch vụ"
-                      />
+                      <TextField name="serviceName" label="Tên dịch vụ:" placeholder="Nhập tên dịch vụ" />
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography
                       variant="h6"
                       sx={{
-                        position: "relative",
-                        ":after": {
-                          position: "absolute",
+                        position: 'relative',
+                        ':after': {
+                          position: 'absolute',
                           content: '"*"',
-                          color: "error.dark",
-                          left: "55px",
+                          color: 'error.dark',
+                          left: '55px',
                         },
                       }}
                     />
                     <TextField
                       sx={{
-                        ".MuiOutlinedInput-input": {
+                        '.MuiOutlinedInput-input': {
                           pb: 11,
                         },
                       }}
@@ -167,19 +155,19 @@ const UpdateService = (props: Props): JSX.Element => {
                     options={[
                       {
                         value: 1,
-                        label: "Tăng tự động từ:",
+                        label: 'Tăng tự động từ:',
                       },
                       {
                         value: 2,
-                        label: "Prefix:",
+                        label: 'Prefix:',
                       },
                       {
                         value: 3,
-                        label: "Surfix:",
+                        label: 'Surfix:',
                       },
                       {
                         value: 4,
-                        label: "Reset mỗi ngày",
+                        label: 'Reset mỗi ngày',
                       },
                     ]}
                     getItemLabel={(item) => item.label}
@@ -210,12 +198,12 @@ const UpdateService = (props: Props): JSX.Element => {
                 padding="10px"
                 fontWeight="300"
                 sx={{
-                  position: "relative",
-                  ":before": {
-                    position: "absolute",
+                  position: 'relative',
+                  ':before': {
+                    position: 'absolute',
                     content: '"*"',
-                    color: "error.dark",
-                    left: "0",
+                    color: 'error.dark',
+                    left: '0',
                   },
                 }}
               >
@@ -230,8 +218,8 @@ const UpdateService = (props: Props): JSX.Element => {
                   variant="contained"
                   size="medium"
                   sx={{
-                    backgroundColor: "primary.main",
-                    color: "white",
+                    backgroundColor: 'primary.main',
+                    color: 'white',
                     ml: 4,
                   }}
                   type="submit"

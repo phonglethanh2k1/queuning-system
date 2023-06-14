@@ -9,7 +9,6 @@ import { SettingRoute } from 'routers/setting/route';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { addRoleAsync } from 'redux/slices/roleSlices';
-import Setting from '..';
 import { useNavigate } from 'react-router-dom';
 type AddRole = {
   roleName: string;
@@ -38,13 +37,6 @@ const AddRole = (): JSX.Element => {
     dispatch<any>(addRoleAsync(values));
     navigate(SettingRoute.ROLE);
   };
-  // const handleCheckboxChange = (newValue: any) => {
-  //   if (newValue.includes(1)) {
-  //     setCheckboxValues([1, 2, 3, 4]); // Nếu checkbox "Tất cả" được chọn, đánh dấu tất cả các checkbox khác
-  //   } else {
-  //     setCheckboxValues(newValue); // Ngược lại, lưu trạng thái của checkbox như bình thường
-  //   }
-  // };
   const handleCancel = () => {
     methods.reset({
       roleName: '',

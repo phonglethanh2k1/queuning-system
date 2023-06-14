@@ -16,7 +16,8 @@ import { useNavigate } from 'react-router-dom';
 import { DashboardRoute } from 'routers/dashboard/route';
 
 interface SignInFormType {
-  [key: string]: string;
+  username: string;
+  password: string;
 }
 
 const SignInForm: FC<{ data: ResponseProps }> = ({ data }) => {
@@ -37,23 +38,22 @@ const SignInForm: FC<{ data: ResponseProps }> = ({ data }) => {
   };
 
   const handleSubmit = async (values: SignInFormType): Promise<void> => {
-    signIn({ step: '1', values })
-      .then((response) => {
-        if (response.code === 406) {
-          enqueueSnackbar(response.message, { variant: 'error' });
-          return;
-        }
+    try {
+      const response = await signIn({ step: '1', values });
 
-        if (response.code === 200) {
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('username', values.username);
-          localStorage.setItem('password', values.password);
-          handleNextStep();
-        }
-      })
-      .catch((error) => {
-        enqueueSnackbar(error.message, { variant: 'error' });
-      });
+      if (response.code === 406) {
+        enqueueSnackbar(response.message, { variant: 'error' });
+        return;
+      }
+
+      if (response.code === 200) {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('accessToken', response.accessToken.toString()); // Lưu access token vào local storage
+        handleNextStep();
+      }
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    }
   };
 
   return (

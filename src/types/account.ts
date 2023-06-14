@@ -1,8 +1,8 @@
 export enum Role {
-  ALL = 'Tất cả',
-  ACCOUNTANT = 'Kế toán',
-  MANAGE = 'Quản lý',
-  ADMIN = 'Admin',
+  ALL = 0,
+  ACCOUNTANT = 1,
+  MANAGE = 2,
+  ADMIN = 3,
 }
 
 export const RoleOptions = {
@@ -26,8 +26,8 @@ export const RoleOptions = {
 
 export enum Status {
   ALL = 2,
-  HOATDONG = 1,
-  NGUNGHOATDONG = -1,
+  ON = 1,
+  OFF = -1,
 }
 
 export const StatusOptions = {
@@ -35,12 +35,12 @@ export const StatusOptions = {
     value: Status.ALL,
     label: 'Tất cả',
   },
-  [Status.HOATDONG]: {
-    value: Status.HOATDONG,
+  [Status.ON]: {
+    value: Status.ON,
     label: 'Hoạt động',
   },
-  [Status.NGUNGHOATDONG]: {
-    value: Status.NGUNGHOATDONG,
+  [Status.OFF]: {
+    value: Status.OFF,
     label: 'Ngưng hoạt động',
   },
 };
@@ -50,6 +50,8 @@ export type Account = {
   fullName: string;
   phoneNumber: string;
   email: string;
-  role: Role;
-  status: Status;
+  role?: Role | any;
+  password: string;
+  status?: Status | any;
+  retypePassword: string;
 };

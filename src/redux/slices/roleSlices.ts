@@ -9,6 +9,7 @@ import {
   getDocs,
   limit,
   query,
+  updateDoc,
 } from 'firebase/firestore';
 import { firebaseDatabase } from 'firebaseApp/config';
 interface UpdateDataPayload {
@@ -51,7 +52,7 @@ const roleSlices = createSlice({
       state.status = 'failed';
       state.error = action.payload;
     },
-    updateService(state, action: PayloadAction<{ id: string; data: Partial<Data> }>) {
+    UpdateRole(state, action: PayloadAction<{ id: string; data: Partial<Data> }>) {
       const { id, data } = action.payload;
       const index = state.data.findIndex((device) => device.id === id);
       if (index !== -1) {
@@ -64,7 +65,7 @@ const roleSlices = createSlice({
   },
 });
 
-export const { dataRequested, dataReceived, dataRequestFailed, updateService, setCount } = roleSlices.actions;
+export const { dataRequested, dataReceived, dataRequestFailed, UpdateRole, setCount } = roleSlices.actions;
 
 export default roleSlices.reducer;
 
@@ -104,35 +105,48 @@ export const addRoleAsync = createAsyncThunk('data/addRole', async (data: any) =
   handleCreate(role);
 });
 
-// export const updateServiceAsync = createAsyncThunk(
-//   "data/updateService",
-//   async (payload: UpdateDataPayload) => {
-//     const { id, values } = payload;
-//     const documentRef = doc(firebaseDatabase, "service", id); // Thay collection-name bằng tên collection của bạn
-//     const checkboxDocs = values.checkbox.map((checkboxItem: any, index: any) => {
-//       return {
-//         id: `checkbox_${index}`,
-//         value: checkboxItem
-//       };
-//     });
-//     try {
-//       await updateDoc(documentRef, {
-//         ...values,
-//         checkbox: checkboxDocs
-//       });
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// );
-export const fetchCount = (): AppThunk => async (dispatch: any) => {
+export const updateRoleAsync = createAsyncThunk('data/updateRole', async (payload: UpdateDataPayload) => {
+  const { id, values } = payload;
+  const documentRef = doc(firebaseDatabase, 'roleSetting', id);
+  // const checkboxDocs = values.checkbox.map((checkboxItem: any, index: any) => {
+  //   return {
+  //     id: `checkbox_${index}`,
+  //     value: checkboxItem,
+  //   };
+  // });
   try {
-    const equipment = collection(firebaseDatabase, 'report');
-    let queryString = query(equipment, limit(10));
-    const coll = collection(firebaseDatabase, 'report');
-    const countSnapshot = await getCountFromServer(coll);
-    dispatch(setCount(countSnapshot.data()?.count));
+    await updateDoc(documentRef, {
+      roleName: values.roleName,
+      descrip: values.descrip,
+      // operationStt: values.operationStt,
+      // checkbox: checkboxDocs,
+    });
   } catch (error) {
-    // Xử lý lỗi
+    console.log(error);
   }
-};
+});
+
+export const fetchSearchRole =
+  (searchTerm: string): AppThunk =>
+  async (dispatch: any) => {
+    dispatch(dataRequested());
+    try {
+      const equipment = collection(firebaseDatabase, 'roleSetting');
+      const searchQuery = query(equipment);
+      const snapshot = await getDocs(searchQuery);
+      const result = snapshot.docs
+        .map((docSnap: QueryDocumentSnapshot<any>) => ({
+          ...docSnap.data(),
+          id: docSnap.id,
+        }))
+        .filter(
+          (doc: any) =>
+            doc.roleName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doc.descrip.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doc.numberOfUsers.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      dispatch(dataReceived(result));
+    } catch (error) {
+      dispatch(dataRequestFailed(error.message));
+    }
+  };

@@ -7,26 +7,39 @@ import TableRow from '@mui/material/TableRow';
 import { TableContainer, Typography, Box, TextField, InputAdornment, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/store';
-import { Data, fetchData } from 'redux/slices/accountSlices';
+import { Data, fetchData, fetchSearchAccount } from 'redux/slices/accountSlices';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { SettingRoute } from 'routers/setting/route';
 import AutoComplete from 'components/form/AutoComplete';
-import { Role, RoleOptions, Status } from 'types/account';
+import { Role, RoleOptions, Status, StatusOptions } from 'types/account';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import BasicPagination from './Pagination';
 
 const Tables = (): JSX.Element => {
+  const [count, setCount] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const dispatch = useDispatch();
-  const [selectedRole, setSelectedRole] = useState(Role.ALL);
+  const [selectedRole, setSelectedRole] = useState<Role | undefined>(undefined);
   const data = useSelector((state: RootState) => state.account.data);
+  const handleRole = (event: any, newValue: any) => {
+    setSelectedRole(newValue);
+  };
+  const handleOnChange = (event: any) => {
+    setSearchTerm(event.target.value);
+    dispatch(fetchSearchAccount(event.target.value));
+  };
+  useEffect(() => {
+    dispatch(fetchData(selectedRole, 1));
+  }, [dispatch, selectedRole]);
   const renderUpdate = (detail: Data) => (
     <RouterLink to={`${SettingRoute.UPDATE_ACCOUNT.replace(':id', detail.id)}`} style={{ color: '#4277FF' }}>
       Cập nhật
     </RouterLink>
   );
-  const renderStatus = (status: Status) => {
-    if (status === Status.NGUNGHOATDONG) {
+  const renderStatus = (status: any | null) => {
+    const statusLabel = status ? status.label : '';
+    if (statusLabel === StatusOptions[Status.OFF].label) {
       return (
         <Button size="medium" variant="text" startIcon={<FiberManualRecordIcon color="error" />} sx={{ py: 1, px: 0 }}>
           Ngưng hoạt động
@@ -40,19 +53,30 @@ const Tables = (): JSX.Element => {
       </Button>
     );
   };
-  const getRoleLabel = (row: any) => {
-    if (row.role && row.role.label) {
-      return row.role.label;
+  const getRoleLabel = (role: any | null) => {
+    const roleLabel = role ? role.label : '';
+    if (roleLabel === RoleOptions[Role.ACCOUNTANT].label) {
+      return (
+        <Button size="medium" variant="text">
+          Kế toán
+        </Button>
+      );
     }
-    return row.role ? row.role.toString() : '';
+
+    if (roleLabel === RoleOptions[Role.MANAGE].label) {
+      return (
+        <Button size="medium" variant="text">
+          Quản lý
+        </Button>
+      );
+    }
+
+    return (
+      <Button size="medium" variant="text">
+        Admin
+      </Button>
+    );
   };
-  const handleRole = (event: any, newValue: any) => {
-    setSelectedRole(newValue.id);
-  };
-  useEffect(() => {
-    const page = 0;
-    dispatch(fetchData(selectedRole, page));
-  }, [dispatch, selectedRole]);
 
   return (
     <>
@@ -95,6 +119,8 @@ const Tables = (): JSX.Element => {
         <Box>
           <Typography variant="body1">Từ khóa</Typography>
           <TextField
+            value={searchTerm}
+            onChange={handleOnChange}
             placeholder="Nhập từ khóa"
             InputProps={{
               endAdornment: (
@@ -134,8 +160,8 @@ const Tables = (): JSX.Element => {
                 <TableCell align="center">{row.fullName}</TableCell>
                 <TableCell align="center">{row.phoneNumber}</TableCell>
                 <TableCell align="center">{row.email}</TableCell>
-                <TableCell align="center">{getRoleLabel(row)}</TableCell>
-                <TableCell align="center">{renderStatus(row.status)}</TableCell>
+                <TableCell align="center">{getRoleLabel(row.role)}</TableCell>
+                <TableCell align="left">{renderStatus(row.status)}</TableCell>
                 <TableCell align="center">{renderUpdate(row)}</TableCell>
               </TableRow>
             ))}

@@ -5,8 +5,11 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCount, fetchData } from 'redux/slices/levelNoSlices';
 import { nameService, status, powerSupply } from 'types/levelNo';
+import { Link, useNavigate } from 'react-router-dom';
+import { PaginationItem } from '@mui/material';
 export default function BasicPagination() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const count = useSelector((state: any) => state.data.count);
   const [currentPage, setCurrentPage] = React.useState(1);
   const itemsPerPage = 10;
@@ -17,16 +20,25 @@ export default function BasicPagination() {
   const [selectedPowerSupply, setSelectedPowerSupply] = useState(powerSupply.ALL);
   const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page);
-    // Thực hiện các thao tác cần thiết khi chuyển page, ví dụ dispatch action để fetch dữ liệu của page mới
-    // ...
-    const offset = (page - 1) * itemsPerPage; // Số sản phẩm cần bỏ qua để đến trang mới
-    dispatch(fetchData(selectedServiceName, selectedStatus, selectedPowerSupply, offset));
+    const searchParams = new URLSearchParams();
+    searchParams.set('page', page.toString());
+    navigate(`/level-No?${searchParams.toString()}`);
+    // const offset = (page - 1) * itemsPerPage; // Số sản phẩm cần bỏ qua để đến trang mới
+    dispatch(fetchData(selectedServiceName, selectedStatus, selectedPowerSupply, page));
   };
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const page = parseInt(searchParams.get('page') ?? '1', 10);
+    if (page !== currentPage) {
+      setCurrentPage(page);
+      dispatch(fetchData(selectedServiceName, selectedStatus, selectedPowerSupply, page));
+    }
     dispatch(fetchCount());
-  }, [dispatch]);
-
+  }, [currentPage, dispatch, selectedServiceName, selectedStatus, selectedPowerSupply]);
+  const renderPaginationItem = (item: any) => (
+    <PaginationItem component={Link} to={`/level-No?page=${item.page}`} {...item} />
+  );
   return (
     <Stack spacing={2}>
       <Pagination
@@ -36,6 +48,7 @@ export default function BasicPagination() {
         variant="outlined"
         shape="rounded"
         sx={{ '.MuiPagination-ul': { justifyContent: 'end', mt: 2 } }}
+        renderItem={renderPaginationItem}
       />
     </Stack>
   );

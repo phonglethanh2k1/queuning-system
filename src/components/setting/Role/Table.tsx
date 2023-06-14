@@ -7,14 +7,20 @@ import TableRow from '@mui/material/TableRow';
 import { TableContainer, Typography, Box, TextField, InputAdornment } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/store';
-import { Data, fetchData } from 'redux/slices/roleSlices';
+import { Data, fetchData, fetchSearchRole } from 'redux/slices/roleSlices';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { ServiceRoute } from 'routers/service/route';
 import { SettingRoute } from 'routers/setting/route';
 const Tables = (): JSX.Element => {
   const dispatch = useDispatch();
   const data = useSelector((state: RootState) => state.role.data);
+
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
+  const handleOnChange = (event: any) => {
+    setSearchTerm(event.target.value);
+    dispatch(fetchSearchRole(event.target.value));
+  };
   const renderUpdate = (detail: Data) => (
     <RouterLink to={`${SettingRoute.UPDATE_ROLE.replace(':id', detail.id)}`} style={{ color: '#4277FF' }}>
       Cập nhật
@@ -30,6 +36,8 @@ const Tables = (): JSX.Element => {
         <Box>
           <Typography variant="body1">Từ khóa</Typography>
           <TextField
+            value={searchTerm}
+            onChange={handleOnChange}
             placeholder="Nhập từ khóa"
             InputProps={{
               endAdornment: (

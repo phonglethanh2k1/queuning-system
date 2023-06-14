@@ -1,90 +1,69 @@
-import React, { useEffect, useState } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import {
-  Button,
-  TableContainer,
-  Typography,
-  Box,
-  TextField,
-  InputAdornment,
-} from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "app/store";
-import { Data, fetchData } from "redux/slices/serviceSlice";
-import { OperationStatusOption, operationStatus } from "types/service";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { Link as RouterLink } from "react-router-dom";
-import AutoComplete from "components/form/AutoComplete";
-import SearchIcon from "@mui/icons-material/Search";
-import { DeviceRoute } from "routers/device/route";
-import DatePicker from "components/form/DatePicker";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import { ServiceRoute } from "routers/service/route";
-import BasicPagination from "./Pagination";
+import React, { useEffect, useState } from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { Button, TableContainer, Typography, Box, TextField, InputAdornment } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'app/store';
+import { Data, fetchData, fetchSearchService } from 'redux/slices/serviceSlice';
+import { OperationStatusOption, operationStatus } from 'types/service';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import { Link as RouterLink } from 'react-router-dom';
+import AutoComplete from 'components/form/AutoComplete';
+import SearchIcon from '@mui/icons-material/Search';
+import DatePicker from 'components/form/DatePicker';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import { ServiceRoute } from 'routers/service/route';
+import BasicPagination from './Pagination';
 const Tables = (): JSX.Element => {
   const dispatch = useDispatch();
   const data = useSelector((state: RootState) => state.service.data);
-  const [selectedOperationStt, setSelectedOperationStt] = useState(
-    operationStatus.ALL
-  );
-  const [fromDate, setfromDate] = useState(new Date("10/10/2021"));
+  const [selectedOperationStt, setSelectedOperationStt] = useState(operationStatus.ALL);
+  const [fromDate, setfromDate] = useState(new Date('10/10/2021'));
   const [toDate, setToDate] = useState(new Date());
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const handleOperationSttChange = (event: any, newValue: any) => {
     setSelectedOperationStt(newValue.id);
   };
-
+  const handleOnChange = (event: any) => {
+    setSearchTerm(event.target.value);
+    dispatch(fetchSearchService(event.target.value));
+    console.log(searchTerm);
+  };
   // const status = useSelector((state: RootState) => state.data.status);
   // const error = useSelector((state: RootState) => state.data.error);
   const renderOperationStt = (operationStt: operationStatus) => {
     if (operationStt === operationStatus.OFF) {
       return (
-        <Button
-          size="medium"
-          variant="text"
-          startIcon={<FiberManualRecordIcon color="error" />}
-          sx={{ py: 1, px: 0 }}
-        >
+        <Button size="medium" variant="text" startIcon={<FiberManualRecordIcon color="error" />} sx={{ py: 1, px: 0 }}>
           Ngưng hoạt động
         </Button>
       );
     }
 
     return (
-      <Button
-        size="medium"
-        variant="text"
-        startIcon={<FiberManualRecordIcon color="success" />}
-        sx={{ py: 1, px: 0 }}
-      >
+      <Button size="medium" variant="text" startIcon={<FiberManualRecordIcon color="success" />} sx={{ py: 1, px: 0 }}>
         Hoạt động
       </Button>
     );
   };
   // eslint-disable-next-line consistent-return
   const renderDetail = (detail: Data) => (
-    <RouterLink
-      to={`${ServiceRoute.SERVICE}/${detail.id}`}
-      style={{ color: "#4277FF" }}
-    >
+    <RouterLink to={`${ServiceRoute.SERVICE}/${detail.id}`} style={{ color: '#4277FF' }}>
       Chi tiết
     </RouterLink>
   );
   // eslint-disable-next-line consistent-return
   const renderUpdate = (detail: Data) => (
-    <RouterLink
-      to={`${ServiceRoute.UPDATE_SERVICE.replace(":id", detail.id)}`}
-      style={{ color: "#4277FF" }}
-    >
+    <RouterLink to={`${ServiceRoute.UPDATE_SERVICE.replace(':id', detail.id)}`} style={{ color: '#4277FF' }}>
       Cập nhật
     </RouterLink>
   );
   useEffect(() => {
     const page = 0;
-    dispatch(fetchData(selectedOperationStt,page));
+    dispatch(fetchData(selectedOperationStt, page));
   }, [dispatch, selectedOperationStt]);
 
   return (
@@ -96,8 +75,8 @@ const Tables = (): JSX.Element => {
             <AutoComplete
               onChange={handleOperationSttChange}
               sx={{
-                ".MuiOutlinedInput-root": {
-                  padding: "5px",
+                '.MuiOutlinedInput-root': {
+                  padding: '5px',
                 },
               }}
               options={[
@@ -128,8 +107,8 @@ const Tables = (): JSX.Element => {
               value={fromDate}
               onChange={(newValue: any) => setfromDate(newValue)}
               sx={{
-                ".MuiOutlinedInput-root": {
-                  padding: "4px",
+                '.MuiOutlinedInput-root': {
+                  padding: '4px',
                 },
               }}
             />
@@ -142,8 +121,8 @@ const Tables = (): JSX.Element => {
               value={toDate}
               onChange={(newValue: any) => setToDate(newValue)}
               sx={{
-                ".MuiOutlinedInput-root": {
-                  padding: "4px",
+                '.MuiOutlinedInput-root': {
+                  padding: '4px',
                 },
               }}
             />
@@ -153,6 +132,8 @@ const Tables = (): JSX.Element => {
           <Typography variant="body1">Từ khóa</Typography>
           <TextField
             placeholder="Nhập từ khóa"
+            value={searchTerm}
+            onChange={handleOnChange}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="start">
@@ -161,8 +142,8 @@ const Tables = (): JSX.Element => {
               ),
             }}
             sx={{
-              ".MuiOutlinedInput-input": {
-                py: "12px",
+              '.MuiOutlinedInput-input': {
+                py: '12px',
               },
             }}
           />
@@ -189,9 +170,7 @@ const Tables = (): JSX.Element => {
                 </TableCell>
                 <TableCell align="left">{row.serviceName}</TableCell>
                 <TableCell align="left">{row.descrip}</TableCell>
-                <TableCell align="left">
-                  {renderOperationStt(row.operationStt)}
-                </TableCell>
+                <TableCell align="left">{renderOperationStt(row.operationStt)}</TableCell>
 
                 <TableCell align="left">{renderDetail(row)}</TableCell>
                 <TableCell align="left">{renderUpdate(row)}</TableCell>
@@ -199,7 +178,7 @@ const Tables = (): JSX.Element => {
             ))}
           </TableBody>
         </Table>
-        <BasicPagination/>
+        <BasicPagination />
       </TableContainer>
     </>
   );

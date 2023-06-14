@@ -9,6 +9,7 @@ export type RequestProps = {
 };
 
 export type ResponseProps = {
+  accessToken(arg0: string, accessToken: any): unknown;
   data: {
     token: string;
   };
@@ -23,6 +24,7 @@ export function signIn({}: RequestProps): Promise<ResponseProps> {
       data: {
         token: 'token',
       },
+      accessToken: (arg0: string, accessToken: any) => {},
       message: 'Đăng nhập thành công!',
     });
   });

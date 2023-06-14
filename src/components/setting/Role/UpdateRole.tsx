@@ -1,4 +1,4 @@
-import { Box, Button, Grid, MenuItem, Stack, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -8,9 +8,8 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumb from 'components/breadcrumb/Breadcrumb';
 import CheckboxGroupField from 'components/form/controller/CheckboxGroupField';
-import { Data, addServiceAsync, updateServiceAsync } from 'redux/slices/serviceSlice';
-import { ServiceRoute } from 'routers/service/route';
 import { SettingRoute } from 'routers/setting/route';
+import { Data, updateRoleAsync } from 'redux/slices/roleSlices';
 
 const validation = yup.object({});
 
@@ -35,8 +34,8 @@ const UpdateRole = (props: Props): JSX.Element => {
   const { id } = role;
   const handleSubmit = async (values?: Data) => {
     console.log(values);
-    dispatch<any>(updateServiceAsync({ id, values }));
-    navigate(ServiceRoute.SERVICE);
+    dispatch<any>(updateRoleAsync({ id, values }));
+    navigate(SettingRoute.ROLE);
   };
   const handleCancel = () => {
     methods.reset({

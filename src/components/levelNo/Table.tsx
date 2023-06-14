@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import { Button, TableContainer, Typography, Box, TextField, InputAdornment, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/store';
-import { Data, fetchData } from 'redux/slices/levelNoSlices';
+import { Data, fetchData, fetchSearchLevelNo } from 'redux/slices/levelNoSlices';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { Link } from 'react-router-dom';
 import AutoComplete from 'components/form/AutoComplete';
@@ -19,11 +19,24 @@ import { LevelNoRoute } from 'routers/levelNo/route';
 import { nameService, nameServiceOption, powerSupply, powerSupplyOption, status, statusOption } from 'types/levelNo';
 const Tables = (): JSX.Element => {
   const [fromDate, setfromDate] = useState(new Date('10/10/2021'));
+
   const [toDate, setToDate] = useState(new Date());
+
   const [count, setCount] = useState<number>(0);
+
   const [selectedServiceName, setSelectedServiceName] = useState(nameService.ALL);
+
   const [selectedStatus, setSelectedStatus] = useState(status.ALL);
+
   const [selectedPowerSupply, setSelectedPowerSupply] = useState(powerSupply.ALL);
+
+  const [searchTerm, setSearchTerm] = useState<any>('');
+
+  const handleOnChange = (event: any) => {
+    setSearchTerm(event.target.value);
+    console.log(searchTerm);
+    dispatch(fetchSearchLevelNo(event.target.value));
+  };
   const handleServiceName = (event: any, newValue: any) => {
     setSelectedServiceName(newValue.id);
   };
@@ -219,6 +232,8 @@ const Tables = (): JSX.Element => {
           <Box>
             <Typography variant="body1">Từ khóa</Typography>
             <TextField
+              value={searchTerm}
+              onChange={handleOnChange}
               placeholder="Nhập từ khóa"
               InputProps={{
                 endAdornment: (

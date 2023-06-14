@@ -14,7 +14,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { firebaseDatabase } from 'firebaseApp/config';
-import { Role, RoleOptions, Status, StatusOptions } from 'types/account';
+import { Role, Status } from 'types/account';
 interface UpdateDataPayload {
   id: string;
   values: any;
@@ -25,8 +25,8 @@ export interface Data {
   fullName: string;
   phoneNumber: string;
   email: string;
-  role: { id: Role.ACCOUNTANT; label: any };
-  status: number;
+  role: Role;
+  status: Status;
 }
 
 interface DataState {
@@ -76,18 +76,21 @@ export const { dataRequested, dataReceived, dataRequestFailed, updateAccount, se
 export default accountSlices.reducer;
 
 export const fetchData =
-  (selectedRole: Role, offset: number): AppThunk =>
+  (selectedRole: any | undefined, page: number): AppThunk =>
   async (dispatch: any) => {
     dispatch(dataRequested());
     try {
       const equipment = collection(firebaseDatabase, 'accountSetting');
       const itemsPerPage = 10;
       let queryString = query(equipment, limit(itemsPerPage));
-      if (selectedRole !== Role.ALL) {
-        queryString = query(equipment, where('role', '==', selectedRole), limit(itemsPerPage));
+
+      if (selectedRole && selectedRole.id !== Role.ALL) {
+        queryString = query(equipment, where('role.id', '==', selectedRole.id), limit(itemsPerPage));
+      } else {
+        queryString = query(equipment, limit(itemsPerPage));
       }
 
-      if (offset > 1) {
+      if (page > 1) {
         const snapshot = await getDocs(queryString);
         const lastVisibleDocument = snapshot.docs[snapshot.docs.length - 1];
         queryString = query(equipment, startAfter(lastVisibleDocument), limit(itemsPerPage));
@@ -99,6 +102,7 @@ export const fetchData =
       }));
 
       dispatch(dataReceived(result));
+      console.log(result);
     } catch (error) {
       dispatch(dataRequestFailed(error.message));
     }
@@ -106,10 +110,8 @@ export const fetchData =
 
 const handleCreate = async (data: any) => {
   const equipment = collection(firebaseDatabase, 'accountSetting');
-
   const snapshot = await addDoc(equipment, data);
 };
-
 export const addAccountAsync = createAsyncThunk('data/addAccount', async (data: any) => {
   const { fullName, userName, phoneNumber, password, email, retypePassword, role, status } = data;
   const account = {
@@ -128,27 +130,54 @@ export const addAccountAsync = createAsyncThunk('data/addAccount', async (data: 
 
 export const updateAccountAsync = createAsyncThunk('data/updateAccount', async (payload: UpdateDataPayload) => {
   const { id, values } = payload;
-  const documentRef = doc(firebaseDatabase, 'accountSetting', id); // Thay collection-name bằng tên collection của bạn
-  const checkboxDocs = values.checkbox.map((checkboxItem: any, index: any) => {
-    return {
-      id: `checkbox_${index}`,
-      value: checkboxItem,
-    };
-  });
+  const documentRef = doc(firebaseDatabase, 'accountSetting', id);
   try {
-    await updateDoc(documentRef, values);
+    await updateDoc(documentRef, {
+      email: values.email,
+      userName: values.userName,
+      phoneNumber: values.phoneNumber,
+      fullName: values.fullName,
+      role: values.role,
+      status: values.status,
+    });
   } catch (error) {
     console.log(error);
   }
 });
 export const fetchCount = (): AppThunk => async (dispatch: any) => {
   try {
-    const equipment = collection(firebaseDatabase, 'report');
+    const equipment = collection(firebaseDatabase, 'accountSetting');
     let queryString = query(equipment, limit(10));
-    const coll = collection(firebaseDatabase, 'report');
+    const coll = collection(firebaseDatabase, 'accountSetting');
     const countSnapshot = await getCountFromServer(coll);
     dispatch(setCount(countSnapshot.data()?.count));
   } catch (error) {
     // Xử lý lỗi
   }
 };
+
+export const fetchSearchAccount =
+  (searchTerm: string): AppThunk =>
+  async (dispatch: any) => {
+    dispatch(dataRequested());
+    try {
+      const equipment = collection(firebaseDatabase, 'accountSetting');
+      const searchQuery = query(equipment);
+      const snapshot = await getDocs(searchQuery);
+      const result = snapshot.docs
+        .map((docSnap: QueryDocumentSnapshot<any>) => ({
+          ...docSnap.data(),
+          id: docSnap.id,
+        }))
+        .filter(
+          (doc: any) =>
+            doc.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doc.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doc.phoneNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doc.userName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      dispatch(dataReceived(result));
+    } catch (error) {
+      dispatch(dataRequestFailed(error.message));
+    }
+  };

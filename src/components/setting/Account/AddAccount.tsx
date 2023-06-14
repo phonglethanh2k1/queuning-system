@@ -9,31 +9,16 @@ import { useNavigate } from 'react-router-dom';
 import Breadcrumb from 'components/breadcrumb/Breadcrumb';
 import { SettingRoute } from 'routers/setting/route';
 import { addAccountAsync } from 'redux/slices/accountSlices';
-import { Role, RoleOptions, Status, StatusOptions } from 'types/account';
+import { Account, Role, RoleOptions, Status, StatusOptions } from 'types/account';
 import AutoCompleteField from 'components/form/controller/AutoCompleteField';
 
 const validation = yup.object({});
 
-const options = [
-  { id: 1, label: 'Kế toán' },
-  { id: 2, label: 'Quản lý' },
-  { id: 3, label: 'Admin' },
-];
-type AddAccount = {
-  fullName: string;
-  userName: string;
-  phoneNumber: string;
-  password: string;
-  email: string;
-  retypePassword: string;
-  role?: { id: string; label: string } | undefined;
-  status: { id: number; label: string };
-};
 const AddAccount = (): JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const resolver = useYupValidationResolver(validation);
-  const methods = useForm<AddAccount>({
+  const methods = useForm<Account>({
     resolver,
     defaultValues: {
       fullName: '',
@@ -42,11 +27,11 @@ const AddAccount = (): JSX.Element => {
       password: '',
       email: '',
       retypePassword: '',
-      role: { id: Role.ACCOUNTANT, label: RoleOptions[Role.ACCOUNTANT].label },
-      status: { id: Status.ALL, label: StatusOptions[Status.ALL].label },
+      role: '',
+      status: '',
     },
   });
-  const handleSubmit = async (values?: AddAccount) => {
+  const handleSubmit = async (values?: Account) => {
     console.log(values);
     dispatch<any>(addAccountAsync(values));
     navigate(SettingRoute.ACCOUNT);
@@ -256,12 +241,12 @@ const AddAccount = (): JSX.Element => {
                         label: StatusOptions[Status.ALL].label,
                       },
                       {
-                        id: Status.HOATDONG,
-                        label: StatusOptions[Status.HOATDONG].label,
+                        id: Status.ON,
+                        label: StatusOptions[Status.ON].label,
                       },
                       {
-                        id: Status.NGUNGHOATDONG,
-                        label: StatusOptions[Status.NGUNGHOATDONG].label,
+                        id: Status.OFF,
+                        label: StatusOptions[Status.OFF].label,
                       },
                     ]}
                     getItemLabel={(item) => item.label}

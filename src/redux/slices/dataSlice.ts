@@ -76,13 +76,13 @@ export const { dataRequested, dataReceived, dataRequestFailed, updateDevice, set
 export default dataSlice.reducer;
 
 export const fetchData =
-  (selectedOperationStt: any, selectedConnectionStt: any ,page: number): AppThunk =>
-    async (dispatch: any) => {
+  (selectedOperationStt: any, selectedConnectionStt: any, page: number): AppThunk =>
+  async (dispatch: any) => {
     dispatch(dataRequested());
     try {
       const equipment = collection(firebaseDatabase, 'device');
       const itemsPerPage = 10;
-      let queryString = query(equipment, limit(itemsPerPage) );
+      let queryString = query(equipment, limit(itemsPerPage));
       if (selectedOperationStt !== operationStatus.ALL) {
         queryString = query(equipment, where('operationStt', '==', selectedOperationStt), limit(itemsPerPage));
       }
@@ -90,7 +90,7 @@ export const fetchData =
         queryString = query(equipment, where('connectionStt', '==', selectedConnectionStt), limit(itemsPerPage));
       }
 
-     if (page > 1) {
+      if (page > 1) {
         const snapshot = await getDocs(queryString);
         const lastVisibleDocument = snapshot.docs[snapshot.docs.length - 1];
         queryString = query(equipment, startAfter(lastVisibleDocument), limit(itemsPerPage));
@@ -111,7 +111,6 @@ const handleCreate = async (data: any) => {
   const equipment = collection(firebaseDatabase, 'device');
 
   const snapshot = await addDoc(equipment, data);
-
 };
 
 export const addDeviceAsync = createAsyncThunk('data/addDevice', async (data: any) => {
@@ -160,4 +159,27 @@ export const fetchCount = (): AppThunk => async (dispatch: any) => {
     // Xử lý lỗi
   }
 };
-
+export const fetchSearchDevice =
+  (searchTerm: string): AppThunk =>
+  async (dispatch: any) => {
+    dispatch(dataRequested());
+    try {
+      const equipment = collection(firebaseDatabase, 'device');
+      const searchQuery = query(equipment);
+      const snapshot = await getDocs(searchQuery);
+      const result = snapshot.docs
+        .map((docSnap: QueryDocumentSnapshot<any>) => ({
+          ...docSnap.data(),
+          id: docSnap.id,
+        }))
+        .filter(
+          (doc: any) =>
+            doc.deviceCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doc.deviceName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doc.addressIP.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      dispatch(dataReceived(result));
+    } catch (error) {
+      dispatch(dataRequestFailed(error.message));
+    }
+  };

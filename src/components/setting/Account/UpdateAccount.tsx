@@ -5,38 +5,25 @@ import * as yup from 'yup';
 import useYupValidationResolver from 'helpers/useYupValidationResolver';
 import TextField from 'components/form/controller/TextField';
 import { useDispatch } from 'react-redux';
-import { addDeviceAsync } from 'redux/slices/dataSlice';
 import { useNavigate } from 'react-router-dom';
-import { connectionStatus, operationStatus } from 'types/device';
-import { DeviceRoute } from 'routers/device/route';
 import Breadcrumb from 'components/breadcrumb/Breadcrumb';
 import { SettingRoute } from 'routers/setting/route';
-import { addAccountAsync, updateAccountAsync } from 'redux/slices/accountSlices';
+import { Data, updateAccountAsync } from 'redux/slices/accountSlices';
+import AutoCompleteField from 'components/form/controller/AutoCompleteField';
+import { StatusOptions, Status, Role, RoleOptions } from 'types/account';
 
 const validation = yup.object({});
-
-type UpdateAccount = {
-  fullName: string;
-  userName: string;
-  phoneNumber: string;
-  password: string;
-  email: string;
-  retypePassword: string;
-  role?: string;
-  status: any;
-};
 
 type Props = {
   account: any;
 };
 const UpdateAccount = (props: Props): JSX.Element => {
   const { account } = props;
-  const options = ['Tất cả', 'Ngưng hoạt động', 'hoạt động'];
-  const optionsRole = ['Kế toán', 'Quản lý', 'Admin'];
+  const { id } = account;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const resolver = useYupValidationResolver(validation);
-  const methods = useForm<UpdateAccount>({
+  const methods = useForm<any>({
     resolver,
     defaultValues: {
       fullName: account.fullName,
@@ -49,9 +36,8 @@ const UpdateAccount = (props: Props): JSX.Element => {
       status: account.status,
     },
   });
-  const handleSubmit = async (values?: any) => {
-    console.log(values);
-    dispatch<any>(updateAccountAsync(values));
+  const handleSubmit = async (values: Data) => {
+    dispatch<any>(updateAccountAsync({ id, values }));
     navigate(SettingRoute.ACCOUNT);
   };
   const handleCancel = () => {
@@ -200,13 +186,33 @@ const UpdateAccount = (props: Props): JSX.Element => {
                       },
                     }}
                   />
-                  <TextField name="role" label="Vai trò:" select>
-                    {optionsRole.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                  <Typography variant="body1" mb={1}>
+                    Vai trò:
+                  </Typography>
+                  <AutoCompleteField
+                    sx={{
+                      '.MuiOutlinedInput-root': {
+                        padding: '1px',
+                      },
+                    }}
+                    options={[
+                      {
+                        id: Role.ACCOUNTANT,
+                        label: RoleOptions[Role.ACCOUNTANT].label,
+                      },
+                      {
+                        id: Role.MANAGE,
+                        label: RoleOptions[Role.MANAGE].label,
+                      },
+                      {
+                        id: Role.ADMIN,
+                        label: RoleOptions[Role.ADMIN].label,
+                      },
+                    ]}
+                    getItemValue={(item) => item.id}
+                    getItemLabel={(item) => item.label}
+                    name="role"
+                  />
                 </Grid>
                 <Grid item xs={6}>
                   <Typography
@@ -221,13 +227,33 @@ const UpdateAccount = (props: Props): JSX.Element => {
                       },
                     }}
                   />
-                  <TextField name="status" label="Tình trạng:" select>
-                    {options.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                  <Typography variant="body1" mb={1}>
+                    Tình trạng:
+                  </Typography>
+                  <AutoCompleteField
+                    sx={{
+                      '.MuiOutlinedInput-root': {
+                        padding: '1px',
+                      },
+                    }}
+                    options={[
+                      {
+                        id: Status.ALL,
+                        label: StatusOptions[Status.ALL].label,
+                      },
+                      {
+                        id: Status.ON,
+                        label: StatusOptions[Status.ON].label,
+                      },
+                      {
+                        id: Status.OFF,
+                        label: StatusOptions[Status.OFF].label,
+                      },
+                    ]}
+                    getItemValue={(item) => item.id}
+                    getItemLabel={(item) => item.label}
+                    name="status"
+                  />
                 </Grid>
               </Grid>
               <Typography

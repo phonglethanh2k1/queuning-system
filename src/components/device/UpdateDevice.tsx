@@ -8,7 +8,6 @@ import { Data, updateDeviceAsync } from 'redux/slices/dataSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { DeviceRoute } from 'routers/device/route';
-import CloseIcon from '@mui/icons-material/Close';
 import Breadcrumb from 'components/breadcrumb/Breadcrumb';
 
 const validation = yup.object({});
